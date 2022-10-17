@@ -1,4 +1,4 @@
 # Misto
 
-kiki ima velika jaja
+Nas prvi repozitorij
 

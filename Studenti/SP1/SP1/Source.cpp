@@ -23,7 +23,7 @@ int main(void) {
 
 
 	printf("Insert filename > ");
-	scanf(" %s", filename);
+	scanf(" %s", &filename);
 	strcat(filename, ".txt");
 
 	studenti = (Student*)malloc(countStudentsFromFile(filename) * sizeof(Student));

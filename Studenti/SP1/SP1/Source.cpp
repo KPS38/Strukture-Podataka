@@ -24,7 +24,7 @@ int main(void) {
 
 
 	printf("Unesite ime .txt dokumenta: ");
-	scanf(" %s", &filename);
+	scanf(" %s", &filename);					//samo ime bez .txt upisat
 	strcat(filename, ".txt");
 
 	count = countStudentsFromFile(filename);
@@ -52,7 +52,7 @@ int countStudentsFromFile(char* filename) {
 	while (!feof(fp)) {
 		fgets(buffer, MAX_LINE, fp);
 		if (strcmp("\n", buffer) != 0) {
-			count++;
+			count++;							//izbroji jedan vise nego sta bi tribalo, zezne mi sve drugo
 		}
 	}
 	fclose(fp);
@@ -70,7 +70,7 @@ void ispisStudenata(int count, char* filename, Student* studenti) {
 		for (i = 0; i < count; i++) {
 			fscanf(fp, "%s %s %f", studenti[i].ime, studenti[i].prez, &studenti[i].rez);
 			printf("%s\t\t%s\t\t%f\t\t%f\n", studenti[i].ime, studenti[i].prez, studenti[i].rez, float((studenti[i].rez/max_br_bodova)*100));
-		}
+		}							//zbog counta viska zadnja linija je trash al ono zesci
 	}
 	fclose(fp);
 }

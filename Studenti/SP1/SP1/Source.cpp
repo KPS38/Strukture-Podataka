@@ -9,8 +9,8 @@
 #define max_br_bodova 80
 
 typedef struct {
-	char ime[20], prez[20];
-	int rez;
+	char ime[MAX_LINE], prez[MAX_LINE];
+	float rez;
 }Student;
 
 int countStudentsFromFile(char* filename);
@@ -49,9 +49,9 @@ int countStudentsFromFile(char* filename) {
 		return FILE_DIDNT_OPEN_ERROR;
 	}
 
-	while (fscanf(fp, "%s", filename) != EOF) {
+	while (!feof(fp)) {
 		fgets(buffer, MAX_LINE, fp);
-		if (strcmp(buffer, "\n") != 0) {
+		if (strcmp("\n", buffer) != 0) {
 			count++;
 		}
 	}
@@ -65,11 +65,11 @@ void ispisStudenata(int count, char* filename, Student* studenti) {
 
 	fp = fopen(filename, "r");
 
-	printf("Ime\t\tPrezime\t\tRezultat\t\tPostotak prolaznost\n");
-	while (fscanf(fp, "%s", filename) != EOF) {
+	printf("\nIme\t\tPrezime\t\tRezultat\t\tPostotak prolaznost\n");
+	while (!feof(fp)) {
 		for (i = 0; i < count; i++) {
-			fscanf(fp, "%s %s %d", studenti[i].ime, studenti[i].prez, &studenti[i].rez);
-			printf("%s\t\t%s\t\t%d\t\t%f\n", studenti[i].ime, studenti[i].prez, studenti[i].rez, float(max_br_bodova)/float(studenti[i].rez)*100);
+			fscanf(fp, "%s %s %f", studenti[i].ime, studenti[i].prez, &studenti[i].rez);
+			printf("%s\t\t%s\t\t%f\t\t%f\n", studenti[i].ime, studenti[i].prez, studenti[i].rez, float((studenti[i].rez/max_br_bodova)*100));
 		}
 	}
 	fclose(fp);

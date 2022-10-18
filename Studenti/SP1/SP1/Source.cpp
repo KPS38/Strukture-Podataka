@@ -8,12 +8,13 @@
 #define MAX_FILE_NAME (256)
 #define max_br_bodova 80
 
-struct Student {
+typedef struct {
 	char ime[20], prez[20];
-	int br_bodova;
-};
+	int rez;
+}Student;
 
 int countStudentsFromFile(char* filename);
+void ispisStudenata(int count, char* filename , Student* studenti);
 
 int main(void) {
 	char filename[MAX_FILE_NAME] = { 0 };
@@ -26,11 +27,14 @@ int main(void) {
 	scanf(" %s", &filename);
 	strcat(filename, ".txt");
 
-	studenti = (Student*)malloc(countStudentsFromFile(filename) * sizeof(Student));
 	count = countStudentsFromFile(filename);
+	studenti = (Student*)malloc(count * sizeof(Student));
 	if (count != FILE_DIDNT_OPEN_ERROR) {
 	printf("Broj studenata u datoteci %s je %d.\r\n", filename, count);
 	}
+
+	ispisStudenata(count, filename, studenti);
+
 	return 0;
 }
 
@@ -45,13 +49,28 @@ int countStudentsFromFile(char* filename) {
 		return FILE_DIDNT_OPEN_ERROR;
 	}
 
-	while (!feof(fp)) {
+	while (fscanf(fp, "%s", filename) != EOF) {
 		fgets(buffer, MAX_LINE, fp);
 		if (strcmp(buffer, "\n") != 0) {
 			count++;
 		}
 	}
-
 	fclose(fp);
 	return count;
+}
+
+void ispisStudenata(int count, char* filename, Student* studenti) {
+	FILE* fp = NULL;
+	int i=0;
+
+	fp = fopen(filename, "r");
+
+	printf("Ime\t\tPrezime\t\tRezultat\t\tPostotak prolaznost\n");
+	while (fscanf(fp, "%s", filename) != EOF) {
+		for (i = 0; i < count; i++) {
+			fscanf(fp, "%s %s %d", studenti[i].ime, studenti[i].prez, &studenti[i].rez);
+			printf("%s\t\t%s\t\t%d\t\t%f\n", studenti[i].ime, studenti[i].prez, studenti[i].rez, float(max_br_bodova)/float(studenti[i].rez)*100);
+		}
+	}
+	fclose(fp);
 }

@@ -52,7 +52,7 @@ int countStudentsFromFile(char* filename) {
 	while (!feof(fp)) {
 		fgets(buffer, MAX_LINE, fp);
 		if (strcmp("\n", buffer) != 0) {
-			count++;							//izbroji jedan vise nego sta bi tribalo, zezne mi sve drugo
+			count++;							//sad broji dbr
 		}
 	}
 	fclose(fp);
@@ -65,12 +65,12 @@ void ispisStudenata(int count, char* filename, Student* studenti) {
 
 	fp = fopen(filename, "r");
 
-	printf("\nIme\t\tPrezime\t\tRezultat\t\tPostotak prolaznost\n");
+	printf("\nIme\t\tPrezime\t\tRezultat\t\tPostotak prolaznost(max broj bodova 80)\n");
 	while (!feof(fp)) {
 		for (i = 0; i < count; i++) {
 			fscanf(fp, "%s %s %f", studenti[i].ime, studenti[i].prez, &studenti[i].rez);
-			printf("%s\t\t%s\t\t%f\t\t%f\n", studenti[i].ime, studenti[i].prez, studenti[i].rez, float((studenti[i].rez/max_br_bodova)*100));
-		}							//zbog counta viska zadnja linija je trash al ono zesci
+			printf("%s\t\t%s\t\t%d\t\t%f\n", studenti[i].ime, studenti[i].prez, int(studenti[i].rez), float((studenti[i].rez/max_br_bodova)*100));
+		}							//skenira iz filea i ispisuje ime, prezime, broj bodova i postotnu rijesenost
 	}
 	fclose(fp);
 }

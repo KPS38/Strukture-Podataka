@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FILE_DIDNT_OPEN_ERROR (-1)
+#define PROGRAM_ERROR (-1)							//izmjena naziva za visevrsnu upotrebu
 #define MAX_LINE (1024)
 #define MAX_FILE_NAME (256)
 #define max_br_bodova 80
@@ -29,6 +29,11 @@ int main(void) {
 	count = countStudentsFromFile(filename);
 	studenti = (Student*)malloc(count * sizeof(Student));
 	
+	if (studenti == NULL){
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");       //dodana provjera alociranja
+		return PROGRAM_ERROR;
+	}
+	
 	if (count != FILE_DIDNT_OPEN_ERROR) {
 	printf("Broj studenata u datoteci %s je %d.\r\n", filename, count);
 	}
@@ -46,7 +51,7 @@ int countStudentsFromFile(char* filename) {
 	fp = fopen(filename, "r");
 	if (NULL == fp) {
 		printf("Doslo je do pogreske, dokument %s se nije otvorio!\r\n", filename);
-		return FILE_DIDNT_OPEN_ERROR;
+		return PROGRAM_ERROR;
 	}
 
 	while (!feof(fp)) {

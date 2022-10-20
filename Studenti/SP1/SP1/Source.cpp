@@ -34,7 +34,7 @@ int main(void) {
 		return PROGRAM_ERROR;
 	}
 	
-	if (count != FILE_DIDNT_OPEN_ERROR) {
+	if (count != PROGRAM_ERROR) {
 	printf("Broj studenata u datoteci %s je %d.\r\n", filename, count);
 	}
 

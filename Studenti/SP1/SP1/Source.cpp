@@ -23,7 +23,7 @@ int main(void) {
 	Student* studenti;
 
 	printf("Unesite ime .txt dokumenta: ");
-	scanf(" %s", &filename);					//samo ime bez .txt upisat
+	scanf(" %s", &filename);					//samo upisat ime datoteke bez .txt
 	strcat(filename, ".txt");
 
 	count = countStudentsFromFile(filename);

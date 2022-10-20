@@ -22,13 +22,13 @@ int main(void) {
 
 	Student* studenti;
 
-
 	printf("Unesite ime .txt dokumenta: ");
 	scanf(" %s", &filename);					//samo ime bez .txt upisat
 	strcat(filename, ".txt");
 
 	count = countStudentsFromFile(filename);
 	studenti = (Student*)malloc(count * sizeof(Student));
+	
 	if (count != FILE_DIDNT_OPEN_ERROR) {
 	printf("Broj studenata u datoteci %s je %d.\r\n", filename, count);
 	}
@@ -45,7 +45,7 @@ int countStudentsFromFile(char* filename) {
 
 	fp = fopen(filename, "r");
 	if (NULL == fp) {
-		printf("Dear customer, the file %s didn't open!\r\n", filename);
+		printf("Doslo je do pogreske, dokument %s se nije otvorio!\r\n", filename);
 		return FILE_DIDNT_OPEN_ERROR;
 	}
 

@@ -16,7 +16,7 @@ typedef struct {
 }Student;
 
 int countStudentsFromFile(char* filename);
-void ispisStudenata(int count, char* filename , Student* studenti);
+int ispisStudenata(int count, char* filename , Student* studenti);
 
 int main(void) {
 	char filename[MAX_FILE_NAME] = { 0 };

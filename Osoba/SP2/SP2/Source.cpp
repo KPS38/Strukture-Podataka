@@ -20,6 +20,7 @@ int main(void) {
 		Head.lastName = { 0 };
 		Head.birthYear = 0;
 		Head.next = NULL;
+		itd;
 	}
 	return EXIT_SUCCESS;
 }

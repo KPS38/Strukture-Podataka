@@ -15,7 +15,7 @@ typedef struct _person {
 }osoba;
 
 int UnosIspred(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
-int UnosIza(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
+int UnosIza(osoba * head, Position P);
 int Trazi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
 int Brisi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
 void Ispis(Position P);
@@ -55,6 +55,7 @@ int main(void) {
 					break;
 				case 2:
 					printf("Odabrali ste unos na kraj:\n");
+					UnosIza(Head, Head );
 					break;
 				case 3:
 					printf("Odabrali ste trazenje po prezimenu:\n");
@@ -88,7 +89,30 @@ int main(void) {
 	}
 	
 int UnosIspred(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);				//sritno ti s ovim meni se spajki
-int UnosIza(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);				
+int UnosIza(osoba * head, Position P) {
+	char novoIme[MAX_LINE] = { 0 };
+	char novoPrezime[MAX_LINE] = { 0 };
+	int novaGodina = 0;
+	osoba* novo = head;
+	while (P->Next != NULL) {
+		P = P->Next;
+	}
+
+	novo = (osoba*)malloc(sizeof(osoba));
+	printf("Ime nove osobe: ");
+	scanf("%s", novoIme);
+	strcpy(novo->ime, novoIme);
+	printf("Prezime nove osobe: ");
+	scanf("%s", novoPrezime);
+	strcpy(novo->prezime, novoPrezime);
+	printf("Godina rodenja nove osobe: ");
+	scanf("%d", &novaGodina);
+	novo->godina = novaGodina;
+	P->Next = novo;
+	novo->Next = NULL;
+
+	return EXIT_SUCCESS;
+}
 int Trazi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
 int Brisi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
 

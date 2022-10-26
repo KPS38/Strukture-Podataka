@@ -1,2 +1,3 @@
 ﻿  Source.cpp
-  SP2.vcxproj -> C:\Users\KPS\Desktop\main 2\Misto\Osoba\SP2\Debug\SP2.exe
+C:\Users\Pjero\Desktop\Repozitorij\Main 4\Misto\Osoba\SP2\SP2\Source.cpp(154,24): warning C4101: 'prev': unreferenced local variable
+  SP2.vcxproj -> C:\Users\Pjero\Desktop\Repozitorij\Main 4\Misto\Osoba\SP2\Debug\SP2.exe

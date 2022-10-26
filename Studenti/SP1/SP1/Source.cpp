@@ -22,7 +22,7 @@ int main(void) {
 	Student* studenti;
 
 
-	printf("Insert filename > ");
+	printf("Unesite ime .txt dokumenta: ");
 	scanf(" %s", &filename);
 	strcat(filename, ".txt");
 

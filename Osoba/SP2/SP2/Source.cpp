@@ -14,10 +14,10 @@ typedef struct _person {
 	Position Next;
 }osoba;
 
-int UnosIspred(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
-int UnosIza(osoba * head, Position P);
-int Trazi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
-int Brisi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
+int UnosIspred(Position P);
+int UnosIza(Position P);
+int Trazi(Position P);
+int Brisi(Position P);
 void Ispis(Position P);
 
 
@@ -39,7 +39,7 @@ int main(void) {
 	strcpy(Drugi->ime, "Kristijan");						//pridodavanje vrijednosti
 	strcpy(Drugi->prezime, "Padovan Saviq");
 	Drugi->godina = 2002;
-
+	
 	Prvi->Next = Drugi;						//povezivanje liste
 	Drugi->Next = NULL;
 
@@ -52,10 +52,11 @@ int main(void) {
 			switch (op) {													//radi jebeno
 				case 1:
 					printf("Odabrali ste unos na pocetak:\n");
+					UnosIspred(Head);
 					break;
 				case 2:
 					printf("Odabrali ste unos na kraj:\n");
-					UnosIza(Head, Head );
+					UnosIza(Head);
 					break;
 				case 3:
 					printf("Odabrali ste trazenje po prezimenu:\n");
@@ -78,7 +79,7 @@ int main(void) {
 		
 		} while (op != 0);
 
-		printf("Ciscenje memorije je vrlo vazno...");
+		printf("\nCiscenje memorije je vrlo vazno...");
 		while (Head != NULL)										//ciscenje alocirane memorije na kraju
 		{
 			tmp = Head;
@@ -88,17 +89,41 @@ int main(void) {
 		return EXIT_SUCCESS;
 	}
 	
-int UnosIspred(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);				//sritno ti s ovim meni se spajki
-int UnosIza(osoba * head, Position P) {
+int UnosIspred(Position P) {					//ne ubaci mi na pocetak, probaj otkrit
 	char novoIme[MAX_LINE] = { 0 };
 	char novoPrezime[MAX_LINE] = { 0 };
 	int novaGodina = 0;
-	osoba* novo = head;
+	osoba* novo = P;
+
+	novo = (osoba*)malloc(sizeof(osoba));
+
+	printf("Ime nove osobe: ");
+	scanf("%s", novoIme);
+	strcpy(novo->ime, novoIme);
+	printf("Prezime nove osobe: ");
+	scanf("%s", novoPrezime);
+	strcpy(novo->prezime, novoPrezime);
+	printf("Godina rodenja nove osobe: ");
+	scanf("%d", &novaGodina);
+	novo->godina = novaGodina;
+	
+	novo->Next = P->Next;
+	P->Next = novo;
+
+	return EXIT_SUCCESS;
+}
+int UnosIza(Position P) {				//dobar
+	char novoIme[MAX_LINE] = { 0 };
+	char novoPrezime[MAX_LINE] = { 0 };
+	int novaGodina = 0;
+	osoba* novo = P;
+
 	while (P->Next != NULL) {
 		P = P->Next;
 	}
 
 	novo = (osoba*)malloc(sizeof(osoba));
+
 	printf("Ime nove osobe: ");
 	scanf("%s", novoIme);
 	strcpy(novo->ime, novoIme);
@@ -113,8 +138,8 @@ int UnosIza(osoba * head, Position P) {
 
 	return EXIT_SUCCESS;
 }
-int Trazi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
-int Brisi(char ime[MAX_LINE], char prezime[MAX_LINE], int godina, Position P);
+int Trazi(Position P);
+int Brisi(Position P);
 
 void Ispis(Position temp) {														//ka napravia sam samom ispis
 	while (temp!= NULL) {

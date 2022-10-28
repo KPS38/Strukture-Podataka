@@ -21,6 +21,7 @@ int UnosK(Position P);
 Position Trazi(Position P);
 int Brisi(Position P);
 int Ispis(Position P);
+int UnosO(Position P);
 
 
 int main(void) {
@@ -30,7 +31,6 @@ int main(void) {
 	Head.godina = 0;
 	Head.Next = NULL;
 	int op = 0;
-	Position P;
 
 	do {
 		op = 0;
@@ -62,11 +62,6 @@ int main(void) {
 			printf("Odabrali ste izlaz:\n");
 			break;
 		}
-
-
-
-
-
 	} while (op != 0);
 
 	printf("Ciscenje memorije je vrlo vazno...\n");
@@ -84,12 +79,7 @@ int UnosP(Position P) {
 		return PROGRAM_ERROR;
 	}
 
-	printf("Ime nove osobe: ");
-	scanf("%s", Q->ime);
-	printf("Prezime nove osobe: ");
-	scanf("%s", Q->prezime);
-	printf("Godina rodenja nove osobe: ");
-	scanf("%d", &(Q->godina));
+	UnosO(Q);
 
 	Q->Next = P->Next;
 	P->Next = Q;
@@ -111,12 +101,7 @@ int UnosK(Position P) {
 		return PROGRAM_ERROR;
 	}
 
-	printf("Ime nove osobe: ");
-	scanf("%s", Q->ime);
-	printf("Prezime nove osobe: ");
-	scanf("%s", Q->prezime);
-	printf("Godina rodenja nove osobe: ");
-	scanf("%d", &(Q->godina));
+	UnosO(Q);
 	P->Next = Q;
 	Q->Next = NULL;
 
@@ -138,9 +123,7 @@ Position Trazi(Position P) {
 	if (strcmp(trazenoPrezime, P->prezime) == 0) {
 		printf("Trazena osoba nalazi se na %d. mjestu.\n", brojac);
 		return P;
-	}
-
-	else {
+	} else {
 		printf("Nije pronadena trazena osoba!");
 		return NOT_FOUND;
 	}
@@ -189,5 +172,16 @@ int BrisiSve(Position P) {
 		P->Next = temp->Next;
 		free(temp);
 	}
+	return EXIT_SUCCESS;
+}
+
+int UnosO(Position P) {
+	printf("Ime nove osobe: ");
+	scanf("%s", P->ime);
+	printf("Prezime nove osobe: ");
+	scanf("%s", P->prezime);
+	printf("Godina rodenja nove osobe: ");
+	scanf("%d", &(P->godina));
+
 	return EXIT_SUCCESS;
 }

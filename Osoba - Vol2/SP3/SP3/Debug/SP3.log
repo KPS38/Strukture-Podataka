@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Pjero\source\repos\SP3\SP3\Source.cpp(259): warning C4715: 'UnosIspred': not all control paths return a value
+C:\Users\Pjero\source\repos\SP3\SP3\Source.cpp(230): warning C4715: 'UnosIza': not all control paths return a value
+  SP3.vcxproj -> C:\Users\Pjero\source\repos\SP3\Debug\SP3.exe

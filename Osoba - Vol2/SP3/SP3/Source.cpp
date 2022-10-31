@@ -260,7 +260,7 @@ int UnosIspred(Position P) {
 	return EXIT_SUCCESS;
 }
 int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
-	Position Q, prev_Q, temp, end;													//ako je niz prezimena vec slozen bezz problema radi provjeru i izlazi iz funkcije, cin treba nesto poslozit javlja break
+	Position Q, prev_Q, temp, end;													//ako je niz prezimena vec slozen bez problema radi provjeru i izlazi iz funkcije, cin treba nesto poslozit javlja break
 	
 	Q = (Position)malloc(sizeof(struct osoba));
 

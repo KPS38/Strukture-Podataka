@@ -227,6 +227,7 @@ int UnosIza(Position P) {
 		printf("Nije pronadena trazena osoba!");
 		return PROGRAM_ERROR;
 	}
+	return EXIT_SUCCESS;
 }
 
 int UnosIspred(Position P) {
@@ -256,11 +257,20 @@ int UnosIspred(Position P) {
 		printf("Nije pronadena trazena osoba!");
 		return PROGRAM_ERROR;
 	}
+	return EXIT_SUCCESS;
 }
 int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
-	Position Q, prev_Q, temp, end;													//buble zeza i javlja break
+	Position Q, prev_Q, temp, end;													//ako je niz prezimena vec slozen bezz problema radi provjeru i izlazi iz funkcije, cin treba nesto poslozit javlja break
+	
+	Q = (Position)malloc(sizeof(struct osoba));
 
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
+	}
+	
 	end = NULL;
+
 	while (P->Next != end) {
 		prev_Q = P;
 		Q = P->Next;

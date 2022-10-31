@@ -275,7 +275,7 @@ int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
 		prev_Q = P;
 		Q = P->Next;
 		while (Q->Next != end) {
-			if (strcmp(Q->prezime, Q->Next->prezime) > 0) {
+			if (strcmp(Q->prezime, Q->Next->prezime) > 0) {								//tu javlja break
 				temp = Q->Next;
 				prev_Q->Next = temp;
 				Q->Next = temp->Next;

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_LINE (1024)
+#define MAX_LINE (1024)									//P=Head
 #define PROGRAM_ERROR (-1)
 #define NOT_FOUND (0)
 
@@ -25,6 +25,8 @@ int UnosO(Position P);
 int UnosIza(Position P);
 int UnosIspred(Position P);
 int Sort(Position P);
+int UnosDat(Position P);
+int IspisDat(Position P);
 
 int main(void) {
 	struct osoba Head;
@@ -36,7 +38,7 @@ int main(void) {
 
 	do {
 		op = 0;
-		printf("Odaberite zeljenu operaciju:\n1) Dodaj na pocetak\n2) Dodaj na kraj\n3) Trazi po prezimenu\n4) Brisi zeljeni element\n5) Ispis liste\n6) Unos iza osobe\n7) Unos ispred osobe\n8) Sortiranje osoba\n0) Izlaz\n");
+		printf("Odaberite zeljenu operaciju:\n1) Dodaj na pocetak\n2) Dodaj na kraj\n3) Trazi po prezimenu\n4) Brisi zeljeni element\n5) Ispis liste\n6) Unos iza osobe\n7) Unos ispred osobe\n8) Sortiranje osoba\n9) Unos osoba u dokument\n10) Ispis osoba iz dokument\n0) Izlaz\n");
 		scanf("%d", &op);
 
 		switch (op) {													//radi jebeno
@@ -71,6 +73,14 @@ int main(void) {
 		case 8:
 			printf("Odabrali ste sortiranje osoba:\n");
 			Sort(&Head);
+			break;
+		case 9:
+			printf("Odabrali ste unos osoba u dokument:\n");
+			UnosDat(Head.Next);
+			break;
+		case 10:
+			printf("Odabrali ste ispis osoba iz dokument:\n");
+			IspisDat(Head.Next);
 			break;
 		case 0:
 			printf("Odabrali ste izlaz:\n");
@@ -288,5 +298,46 @@ int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
 		}
 		end = Q;
 	}
+	return EXIT_SUCCESS;
+}
+
+int UnosDat(Position P) {
+
+	FILE* fp = NULL;
+
+	fp = fopen("Osobe.txt", "w");
+	if (NULL == fp) {
+		printf("Doslo je do pogreske, dokument Osobe.txt se nije otvorio!\r\n");
+		return PROGRAM_ERROR;
+	}
+
+	while (P != NULL) {
+		fprintf(fp, "\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n",P->ime, P->prezime, P->godina);
+		P = P->Next;
+	}
+	fclose(fp);
+	return EXIT_SUCCESS;
+}
+
+int IspisDat(Position P) {
+	char ime[MAX_LINE] = { 0 };
+	char prezime[MAX_LINE] = { 0 };
+	int godina = 0;
+	
+	FILE* fp = NULL;
+
+	fp = fopen("Osobe.txt", "r");
+	if (NULL == fp) {
+		printf("Doslo je do pogreske, dokument Osobe.txt se nije otvorio!\r\n");
+		return PROGRAM_ERROR;
+	}
+
+	while (P != NULL) {
+		fscanf(fp, "\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n", &ime, &prezime, &godina);
+		printf("\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n", ime, prezime, godina);
+		P = P->Next;
+	}
+	fclose(fp);
+
 	return EXIT_SUCCESS;
 }

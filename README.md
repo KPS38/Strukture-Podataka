@@ -1,5 +1,5 @@
 # Misto
 
-Prvi domaci rijesen
+Prvi domaci rijesen\n
 I drugi
 

@@ -180,7 +180,7 @@ int Ispis(Position P) {
 
 int BrisiSve(Position P) {
 	Position temp;
-	while (P->Next != NULL)										//konacno brisanje stavljeno u posebnu funkciju
+	while (P->Next != NULL)
 	{
 		temp = P->Next;
 		P->Next = temp->Next;
@@ -189,7 +189,7 @@ int BrisiSve(Position P) {
 	return EXIT_SUCCESS;
 }
 
-int UnosO(Position P) {
+int UnosO(Position P) {												//nezz kako unit dva imena/ prezimena, metode koje znan ne rade za ovaj slucaj vezanih listi
 	printf("Ime nove osobe: ");
 	scanf("%s", P->ime);
 	printf("Prezime nove osobe: ");
@@ -260,7 +260,7 @@ int UnosIspred(Position P) {
 	return EXIT_SUCCESS;
 }
 int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
-	Position Q, prev_Q, temp, end;													//ako je niz prezimena vec slozen bez problema radi provjeru i izlazi iz funkcije, cin treba nesto poslozit javlja break
+	Position Q, prev_Q, temp, end;
 	
 	Q = (Position)malloc(sizeof(struct osoba));
 
@@ -275,14 +275,13 @@ int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
 		prev_Q = P;
 		Q = P->Next;
 		while (Q->Next != end) {
-			if (strcmp(Q->prezime, Q->Next->prezime) > 0) {								//tu javlja break
+			if (strcmp(Q->prezime, Q->Next->prezime) > 0) {
 				temp = Q->Next;
 				prev_Q->Next = temp;
 				Q->Next = temp->Next;
 				temp->Next = Q;
 
 				Q = temp;
-				free(temp);
 			}
 			prev_Q = Q;
 			Q = Q->Next;

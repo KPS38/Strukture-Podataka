@@ -38,8 +38,8 @@ int main(void) {
 
 	do {
 		op = 0;
-		printf("Odaberite zeljenu operaciju:\n1) Dodaj na pocetak\n2) Dodaj na kraj\n3) Trazi po prezimenu\n4) Brisi zeljeni element\n5) Ispis liste\n6) Unos iza osobe\n7) Unos ispred osobe\n8) Sortiranje osoba\n9) Unos osoba u dokument\n10) Ispis osoba iz dokument\n0) Izlaz\n");
-		scanf("%d", &op);
+			printf("*\t*\t*\t*\nOdaberite zeljenu operaciju:\n1) Dodaj na pocetak\n2) Dodaj na kraj\n3) Trazi po prezimenu\n4) Brisi zeljeni element\n5) Ispis liste\n6) Unos iza osobe\n7) Unos ispred osobe\n8) Sortiranje osoba\n9) Unos osoba u dokument\n10) Ispis osoba iz dokument\n0) Izlaz\n*\t*\t*\t*\n");
+			scanf("%d", &op);
 
 		switch (op) {													//radi jebeno
 		case 1:
@@ -269,7 +269,7 @@ int UnosIspred(Position P) {
 	}
 	return EXIT_SUCCESS;
 }
-int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
+int Sort(Position P) {																//NEMOJ VIÅ E NIKAD BUBLE!!!!!!!
 	Position Q, prev_Q, temp, end;
 	
 	Q = (Position)malloc(sizeof(struct osoba));

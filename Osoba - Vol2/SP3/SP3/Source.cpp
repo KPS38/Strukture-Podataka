@@ -199,7 +199,7 @@ int BrisiSve(Position P) {
 	return EXIT_SUCCESS;
 }
 
-int UnosO(Position P) {												//nezz kako unit dva imena/ prezimena, metode koje znan ne rade za ovaj slucaj vezanih listi
+int UnosO(Position P) {												
 	printf("Ime nove osobe: ");
 	scanf("%s", P->ime);
 	printf("Prezime nove osobe: ");

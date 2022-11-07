@@ -1,2 +1,5 @@
 ﻿  Source.c
+C:\Users\Pjero\Desktop\Main\Misto\SP4_Polinom\Polinom\Source.c(53,6): warning C4101: 'cnt': unreferenced local variable
+C:\Users\Pjero\Desktop\Main\Misto\SP4_Polinom\Polinom\Source.c(51,7): warning C4101: 'buffer': unreferenced local variable
+C:\Users\Pjero\Desktop\Main\Misto\SP4_Polinom\Polinom\Source.c(73,23): warning C4047: 'return': 'Position' differs in levels of indirection from 'int'
   Polinom.vcxproj -> C:\Users\Pjero\Desktop\Main\Misto\SP4_Polinom\Debug\Polinom.exe

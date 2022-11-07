@@ -5,6 +5,7 @@
 #define PROGRAM_ERROR (-1)
 #define LINE_LENGTH 128
 
+
 struct _polinom;
 typedef struct _polinom* Position;
 typedef struct _polinom {
@@ -13,6 +14,7 @@ typedef struct _polinom {
 	Position Next;
 }Polinom;
 
+Position Stvori(int k, int e);
 int UnosSort(Position P, Position Q);
 
 int main(void) {
@@ -21,6 +23,12 @@ int main(void) {
 
 	Polinom qHead;						//druga lista
 	qHead.Next = NULL;
+
+	Polinom zHead;						//treca lista za zbroj
+	zHead.Next = NULL;
+
+	Polinom mHead;						//cetvrta lista za umnozak
+	mHead.Next = NULL;
 
 	UnosSort(&pHead, &qHead);
 
@@ -37,17 +45,12 @@ int UnosSort(Position P, Position Q) {
 		return PROGRAM_ERROR;
 	}
 
-	int a = 0, c = 0;					//coef
-	int b = 0, d = 0;					//exp
+	int a = 0, b = 0;					//coef
+	int c = 0, d = 0;					//exp
 	int n = 0;
 	char buffer[LINE_LENGTH];
 	char* poi = NULL;							//pokazivac
 	int cnt;
-
-
-
-
-
 
 
 	/*
@@ -58,4 +61,21 @@ int UnosSort(Position P, Position Q) {
 	P->Next = Q;
 	*/
 	return EXIT_SUCCESS;
+}
+
+Position Stvori(int k, int e) {
+	Position el = NULL;
+
+	el = (Position)malloc(sizeof(Polinom));
+
+	if (NULL == el) {
+		printf("Memory allocation failed!\r\n");
+		return PROGRAM_ERROR;
+	}
+
+	el->coef = k;
+	el->exp = e;
+	el->Next = NULL;
+
+	return el;
 }

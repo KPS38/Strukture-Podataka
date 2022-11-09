@@ -5,33 +5,48 @@
 #define PROGRAM_ERROR (-1)
 #define LINE_LENGTH 128
 
-
-struct _polinom;
-typedef struct _polinom* Position;
-typedef struct _polinom {
+struct Polinom;
+typedef struct Polinom* Position;
+typedef struct Polinom {
 	int coef;
 	int exp;
 	Position Next;
-}Polinom;
+};
 
-Position Stvori(int k, int e);
 int UnosSort(Position P, Position Q);
+int Suma(Position P, Position Q, Position Z);
+int Umnozak(Position P, Position Q, Position U);
+
 
 int main(void) {
-	Polinom pHead;						//prva lista
-	pHead.Next = NULL;
+	struct Polinom pHead = {		//prva lista
+		.coef = 0,
+		.exp = 0,
+		.Next = NULL
+	};					
 
-	Polinom qHead;						//druga lista
-	qHead.Next = NULL;
+	struct Polinom qHead = {		//druga lista
+		.coef = 0,
+		.exp = 0,
+		.Next = NULL
+	};
 
-	Polinom zHead;						//treca lista za zbroj
-	zHead.Next = NULL;
+	struct Polinom zHead = {		//lista za zbroj
+		.coef = 0,
+		.exp = 0,
+		.Next = NULL
+	};
 
-	Polinom mHead;						//cetvrta lista za umnozak
-	mHead.Next = NULL;
+	struct Polinom uHead = {		//lista za umnozak
+		.coef = 0,
+		.exp = 0,
+		.Next = NULL
+	};
 
 	UnosSort(&pHead, &qHead);
 
+	Suma(&pHead, &qHead, &zHead);
+	Umnozak(&pHead, &qHead, &uHead);
 	return EXIT_SUCCESS;
 }
 
@@ -45,8 +60,8 @@ int UnosSort(Position P, Position Q) {
 		return PROGRAM_ERROR;
 	}
 
-	int a = 0, b = 0;					//coef
-	int c = 0, d = 0;					//exp
+	int a = 0, c = 0;							//coef
+	int b = 0, d = 0;							//exp
 	int n = 0;
 	char buffer[LINE_LENGTH];
 	char* poi = NULL;							//pokazivac
@@ -60,22 +75,75 @@ int UnosSort(Position P, Position Q) {
 	Q->Next = P->Next;
 	P->Next = Q;
 	*/
+
 	return EXIT_SUCCESS;
 }
 
-Position Stvori(int k, int e) {
-	Position el = NULL;
+int Suma(Position P, Position Q, Position Z) {
+	while (P->Next && Q->Next) {
+		if (P->exp > Q->exp) {							//ako je potencija prvog veca od drugog
+			Z->exp = P->exp;
+			Z->coef = P->coef;
+			P = P->Next;
+		}
 
-	el = (Position)malloc(sizeof(Polinom));
+		else if (P->exp < Q->exp) {						//ako je potencija drugog veca od prvog
+			Z->exp = Q->exp;
+			P->coef = Q->coef;
+			Q = Q->Next;
+		}
 
-	if (NULL == el) {
-		printf("Memory allocation failed!\r\n");
-		return PROGRAM_ERROR;
+		else {											//ako su iste potencije
+			Z->exp = P->exp;
+			Z->coef = P->coef + Q->coef;
+			P = P->Next;
+			Q = Q->Next;
+		}
+
+		Z->Next = (Position)malloc(sizeof(struct Polinom));
+		Z = Z->Next;
+		Z->Next = NULL;
 	}
 
-	el->coef = k;
-	el->exp = e;
-	el->Next = NULL;
+	while (P->Next || Q->Next) {						//ako ostane samo jedna
+		if (P->Next) {
+			Z->exp = P->exp;
+			Z->coef = P->coef;
+			P = P->Next;
+		}
+		if (Q->Next) {
+			Z->exp = Q->exp;
+			Z->coef = Q->coef;
+			Q = Q->Next;
+		}
+		Z->Next = (Position)malloc(sizeof(struct Polinom));
+		Z = Z->Next;
+		Z->Next = NULL;
+	}
 
-	return el;
+	return EXIT_SUCCESS;
+}
+
+int Prikaz(Position P)
+{
+	while (P->Next != NULL) {
+		printf("%dx^%d", P->coef, P->exp);
+		P = P->Next;
+		if (P->coef >= 0) {
+			if (P->Next != NULL)
+				printf(" + ");
+		}
+		printf("\n");
+	}
+	return EXIT_SUCCESS;
+}
+
+int Umnozak(Position P, Position Q, Position U) 
+{
+	
+
+
+
+
+	return EXIT_SUCCESS;
 }

@@ -2,55 +2,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PROGRAM_ERROR (-1)
-#define LINE_LENGTH 128
+#define PROGRAM_ERROR (-1)									//treba dodati za slucaj kada je coef negativan broj
+#define MALLOC_ERROR (0)									//treba dodati za slucaj kada je exp 0
+#define LINE_LENGTH 128										//treba dodat za slucaj kada imamo isti exp i isti coef ali suprotnog predznaka
 
-struct Polinom;
-typedef struct Polinom* Position;
-typedef struct Polinom {
+struct _polinom;
+typedef struct _polinom* Position;
+typedef struct _polinom {
 	int coef;
 	int exp;
 	Position Next;
-};
+}Polinom;
 
-int UnosSort(Position P, Position Q);
-int Suma(Position P, Position Q, Position Z);
-int Umnozak(Position P, Position Q, Position U);
-
+Position Stvori();
+int UnosDat(Position pHead, Position qHead);
+int UnosSort(Position P, int coef, int exp);
+int Ispis(Position Head);
+int BrisisSve(Position P);
+int DodajK(Position sum, int coef, int exp);
+int Suma(Position pHead, Position qHead);
+int Umnozak(Position PHead, Position qHead);
 
 int main(void) {
-	struct Polinom pHead = {		//prva lista
-		.coef = 0,
-		.exp = 0,
-		.Next = NULL
-	};					
+	Position pHead = NULL;
+	Position qHead = NULL;
+	Position sHead = NULL;
+	Position uHead = NULL;
 
-	struct Polinom qHead = {		//druga lista
-		.coef = 0,
-		.exp = 0,
-		.Next = NULL
-	};
+	pHead = Stvori();
+	qHead = Stvori();
+	
+	UnosDat(pHead, qHead);
 
-	struct Polinom zHead = {		//lista za zbroj
-		.coef = 0,
-		.exp = 0,
-		.Next = NULL
-	};
+	Ispis(pHead);
 
-	struct Polinom uHead = {		//lista za umnozak
-		.coef = 0,
-		.exp = 0,
-		.Next = NULL
-	};
+	Ispis(qHead);
 
-	UnosSort(&pHead, &qHead);
+	sHead = Suma(pHead, qHead);
+	if (sHead == NULL) {
+		printf("\nGreska u zbrajanju!");
+		return PROGRAM_ERROR;
+	}
 
-	Suma(&pHead, &qHead, &zHead);
-	Umnozak(&pHead, &qHead, &uHead);
+	Ispis(sHead);
+
+	uHead = Umnozak(pHead, qHead);
+	if (uHead == NULL) {
+		printf("\nGreska u mnozenju!");
+		return PROGRAM_ERROR;
+	}
+
+	Ispis(uHead);
+
+	BrisisSve(pHead);
+
+	BrisisSve(qHead);
+
+	BrisisSve(sHead);
+
+	BrisisSve(uHead);
+
 	return EXIT_SUCCESS;
 }
 
-int UnosSort(Position P, Position Q) {
+Position Stvori() {
+	Position Head = NULL;
+	Head = (Position)malloc(sizeof(Polinom));
+
+	if (Head == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return MALLOC_ERROR;
+	}
+
+	Head->Next = NULL;
+	Head->exp = 0;
+	Head->coef = 0;
+	return Head;
+}
+
+int UnosDat(Position pHead, Position qHead) {
+
+	int coef = 0, exp = 0, n = 0;
+	char buffer[LINE_LENGTH] = { 0 };
+	char* buf = NULL;
+	int unos = 0;
 
 	FILE* fp = NULL;										//otvaranje dokumenta
 	fp = fopen("polinom.txt", "r");
@@ -60,90 +95,174 @@ int UnosSort(Position P, Position Q) {
 		return PROGRAM_ERROR;
 	}
 
-	int a = 0, c = 0;							//coef
-	int b = 0, d = 0;							//exp
-	int n = 0;
-	char buffer[LINE_LENGTH];
-	char* poi = NULL;							//pokazivac
-	int cnt;
+	fgets(buffer, LINE_LENGTH, fp);
+	buf = buffer;
 
+	while (strlen(buf) != 0) {
+		sscanf_s(buf, "%d %d %n", &coef, &exp, &n);
+		if (coef == 0) {
+			buf += n;
+		}
+		else {
+			unos = UnosSort(pHead, coef, exp);
+			if (unos != 0)
+				return PROGRAM_ERROR;
+			buf += n;
+		}
+	}
 
-	/*
-	while (P->Next != NULL && P->Next->El < Q->El);                    //funkcija za sortirani unos
-	P = P->Next;
+	fgets(buffer, LINE_LENGTH, fp);
+	buf = buffer;
+
+	while (strlen(buf) != 0) {
+		sscanf_s(buf, "%d %d %n", &coef, &exp, &n);
+		if (coef == 0) {
+			buf += n;
+		}
+		else {
+			unos = UnosSort(qHead, coef, exp);
+			if (unos != 0)
+				return PROGRAM_ERROR;
+			buf += n;
+		}
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int UnosSort(Position Head, int coef, int exp) {	
+
+	Position P = Head;
+	Position Q = NULL;
+	Position temp = NULL;
+
+	while (P->Next != NULL && P->Next->exp >= exp) {
+		P = P->Next;
+	}
+
+	Q = (Position)malloc(sizeof(Polinom));
+
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
+	}
+
+	Q->coef = coef;
+	Q->exp = exp;
 
 	Q->Next = P->Next;
 	P->Next = Q;
-	*/
 
 	return EXIT_SUCCESS;
 }
 
-int Suma(Position P, Position Q, Position Z) {
-	while (P->Next && Q->Next) {
-		if (P->exp > Q->exp) {							//ako je potencija prvog veca od drugog
-			Z->exp = P->exp;
-			Z->coef = P->coef;
-			P = P->Next;
-		}
+int Ispis(Position Head){
 
-		else if (P->exp < Q->exp) {						//ako je potencija drugog veca od prvog
-			Z->exp = Q->exp;
-			P->coef = Q->coef;
-			Q = Q->Next;
-		}
-
-		else {											//ako su iste potencije
-			Z->exp = P->exp;
-			Z->coef = P->coef + Q->coef;
-			P = P->Next;
-			Q = Q->Next;
-		}
-
-		Z->Next = (Position)malloc(sizeof(struct Polinom));
-		Z = Z->Next;
-		Z->Next = NULL;
-	}
-
-	while (P->Next || Q->Next) {						//ako ostane samo jedna
-		if (P->Next) {
-			Z->exp = P->exp;
-			Z->coef = P->coef;
-			P = P->Next;
-		}
-		if (Q->Next) {
-			Z->exp = Q->exp;
-			Z->coef = Q->coef;
-			Q = Q->Next;
-		}
-		Z->Next = (Position)malloc(sizeof(struct Polinom));
-		Z = Z->Next;
-		Z->Next = NULL;
-	}
-
-	return EXIT_SUCCESS;
-}
-
-int Prikaz(Position P)
-{
+	Position P = Head;
 	while (P->Next != NULL) {
-		printf("%dx^%d", P->coef, P->exp);
+		printf("%dx^%d", P->Next->coef, P->Next->exp);
 		P = P->Next;
 		if (P->coef >= 0) {
 			if (P->Next != NULL)
 				printf(" + ");
 		}
-		printf("\n");
 	}
+	printf("\n");
 	return EXIT_SUCCESS;
 }
 
-int Umnozak(Position P, Position Q, Position U) 
-{
-	
+int DodajK(Position sum, int coef, int exp) {
+
+	Position P = sum;
+	Position Q = NULL;
+
+	while (P->Next != NULL) {
+		P = P->Next;
+	}
+
+	Q = (Position)malloc(sizeof(Polinom));
+
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
+	}
+
+	Q->coef = coef;
+	Q->exp = exp;
+
+	Q->Next = P->Next;
+	P->Next = Q;
+
+	return EXIT_SUCCESS;
+}
+
+int Suma(Position pHead, Position qHead) {
+
+	Position P = pHead->Next;
+	Position Q = qHead->Next;
+	Position sum = NULL;
+
+	sum = Stvori();
+
+	while (P != NULL && Q != NULL) {
+
+		if (P->exp > Q->exp) {							//ako je potencija prvog veca od drugog
+			DodajK(sum, P->coef, P->exp);
+			P = P->Next;
+		}
+
+		else if (P->exp < Q->exp) {						//ako je potencija drugog veca od prvog
+			DodajK(sum, Q->coef, Q->exp);
+			Q = Q->Next;
+		}
+
+		else {											//ako su iste potencije
+			DodajK(sum, P->coef + Q->coef, P->exp);
+			P = P->Next;
+			Q = Q->Next;
+		}
+	}
+
+	while (P != NULL) {									//ako ostane samo jedna
+		DodajK(sum, P->coef, P->exp);
+		P = P->Next;
+	}
+	while (Q != NULL) {
+		DodajK(sum, Q->coef, Q->exp);
+		Q = Q->Next;
+	}
+
+	return sum;
+}
+
+int Umnozak(Position pHead, Position qHead) {
+
+	Position P = pHead->Next;
+	Position Q = qHead->Next;
+	Position umn = NULL;
+
+	umn = Stvori();
+
+	while (P != NULL) {
+		while (Q != NULL) {
+			UnosSort(umn, P->coef * Q->coef, P->exp + Q->exp);
+			Q = Q->Next;
+		}
+		P = P->Next;
+		Q = qHead->Next;
+	}
+
+	return umn;
+}
 
 
-
-
+int BrisisSve(Position P) {
+	Position temp;
+	while (P->Next != NULL)
+	{
+		temp = P->Next;
+		P->Next = temp->Next;
+		free(temp);
+	}
 	return EXIT_SUCCESS;
 }

@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PROGRAM_ERROR (-1)									//treba dodati za slucaj kada je coef negativan broj
+#define PROGRAM_ERROR (-1)									
 #define MALLOC_ERROR (0)									//treba dodati za slucaj kada je exp 0
-#define LINE_LENGTH 128										//treba dodat za slucaj kada imamo isti exp i isti coef ali suprotnog predznaka
+#define LINE_LENGTH 128										
 
 struct _polinom;
 typedef struct _polinom* Position;
@@ -14,14 +14,16 @@ typedef struct _polinom {
 	Position Next;
 }Polinom;
 
-Position Stvori();
+Position Stvori(void);
 int UnosDat(Position pHead, Position qHead);
-int UnosSort(Position P, int coef, int exp);
+int UnosSort(Position Head, int coef, int exp);
 int Ispis(Position Head);
-int BrisisSve(Position P);
 int DodajK(Position sum, int coef, int exp);
 int Suma(Position pHead, Position qHead);
-int Umnozak(Position PHead, Position qHead);
+int Umnozak(Position pHead, Position qHead);
+int MakniDuple(Position Head);						//poziva se u funkciji ispis
+int BrisiNula(Position Head);							//poziva se u funkciji ispis
+int BrisisSve(Position Head);
 
 int main(void) {
 	Position pHead = NULL;
@@ -31,12 +33,15 @@ int main(void) {
 
 	pHead = Stvori();
 	qHead = Stvori();
-	
-	UnosDat(pHead, qHead);
 
+	UnosDat(pHead, qHead);	
+
+	printf("Prva lista:\n");
 	Ispis(pHead);
 
+	printf("\nDruga lista:\n");
 	Ispis(qHead);
+
 
 	sHead = Suma(pHead, qHead);
 	if (sHead == NULL) {
@@ -44,6 +49,7 @@ int main(void) {
 		return PROGRAM_ERROR;
 	}
 
+	printf("\nZbroj lista:\n");
 	Ispis(sHead);
 
 	uHead = Umnozak(pHead, qHead);
@@ -52,6 +58,7 @@ int main(void) {
 		return PROGRAM_ERROR;
 	}
 
+	printf("\nLista umnoska:\n");
 	Ispis(uHead);
 
 	BrisisSve(pHead);
@@ -62,10 +69,12 @@ int main(void) {
 
 	BrisisSve(uHead);
 
+	printf("\nObrisao sam sve, kad ce vecera?");
+
 	return EXIT_SUCCESS;
 }
 
-Position Stvori() {
+Position Stvori(void) {
 	Position Head = NULL;
 	Head = (Position)malloc(sizeof(Polinom));
 
@@ -130,7 +139,7 @@ int UnosDat(Position pHead, Position qHead) {
 	return EXIT_SUCCESS;
 }
 
-int UnosSort(Position Head, int coef, int exp) {	
+int UnosSort(Position Head, int coef, int exp) {
 
 	Position P = Head;
 	Position Q = NULL;
@@ -156,16 +165,34 @@ int UnosSort(Position Head, int coef, int exp) {
 	return EXIT_SUCCESS;
 }
 
-int Ispis(Position Head){
+int Ispis(Position Head) {
 
 	Position P = Head;
+	MakniDuple(P);
+
+
 	while (P->Next != NULL) {
-		printf("%dx^%d", P->Next->coef, P->Next->exp);
-		P = P->Next;
-		if (P->coef >= 0) {
-			if (P->Next != NULL)
-				printf(" + ");
+		if (P->Next->exp != 0) {
+			if (P->Next->coef > 0) {
+				printf("%dx^%d", P->Next->coef, P->Next->exp);
+				if (P->Next->Next != NULL) {
+					printf(" + ");
+				}
+			}
+			else if (P->Next->coef < 0) {
+				printf("(%dx^%d)", P->Next->coef, P->Next->exp);
+				if (P->Next->Next != NULL) {
+					printf(" + ");
+				}
+			}
 		}
+		else if(P->Next->exp==0){
+			printf("%d", P->Next->coef);
+			if (P->Next->Next != NULL) {
+				printf(" + ");
+			}
+		}
+		P = P->Next;
 	}
 	printf("\n");
 	return EXIT_SUCCESS;
@@ -216,7 +243,7 @@ int Suma(Position pHead, Position qHead) {
 			Q = Q->Next;
 		}
 
-		else {											//ako su iste potencije
+		else if (P->exp == Q->exp){											//ako su iste potencije
 			DodajK(sum, P->coef + Q->coef, P->exp);
 			P = P->Next;
 			Q = Q->Next;
@@ -251,14 +278,61 @@ int Umnozak(Position pHead, Position qHead) {
 		P = P->Next;
 		Q = qHead->Next;
 	}
-
 	return umn;
 }
 
+int MakniDuple(Position Head)
+{
+	Position P = Head;
+	Position Q  =NULL;
 
-int BrisisSve(Position P) {
-	Position temp;
+	if (P == NULL)
+		return PROGRAM_ERROR;
+
 	while (P->Next != NULL)
+	{
+		if (P->exp == P->Next->exp)					//ako uzastopne pozicije imaju isti eksponent, zbraja koeficijente, brise visak
+		{
+			P->coef = P->coef + P->Next->coef;
+			Q = P->Next->Next;
+			free(P->Next);
+			P->Next = Q;
+		}
+		else
+		{
+			P = P->Next;
+		}
+
+	}
+	BrisiNula(P);
+	return EXIT_SUCCESS;
+}
+
+int BrisiNula(Position Head) {
+	Position P = Head;
+	Position temp = NULL;
+
+	while (P->Next != NULL)
+		{
+			if (P->Next->coef == 0)
+			{
+				temp = P->Next;
+				P->Next = P->Next->Next;
+				free(temp);
+				break;
+			}
+			else
+				P = P->Next;
+		}
+
+
+	return EXIT_SUCCESS;
+}
+
+int BrisisSve(Position Head) {
+	Position P = Head;
+	Position temp = NULL;
+	while (P ->Next != NULL)
 	{
 		temp = P->Next;
 		P->Next = temp->Next;

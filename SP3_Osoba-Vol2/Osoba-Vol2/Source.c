@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define PROGRAM_ERROR (-1)									
-#define MALLOC_ERROR (0)									
+#define MALLOC_ERROR (0)									//treba dodati za slucaj kada je exp 0
 #define LINE_LENGTH 128										
 
 struct _polinom;
@@ -243,14 +243,14 @@ int Suma(Position pHead, Position qHead) {
 			Q = Q->Next;
 		}
 
-		else if (P->exp == Q->exp){						//ako su iste potencije
+		else if (P->exp == Q->exp){											//ako su iste potencije
 			DodajK(sum, P->coef + Q->coef, P->exp);
 			P = P->Next;
 			Q = Q->Next;
 		}
 	}
 
-	while (P != NULL) {								//ako ostane samo jedna
+	while (P != NULL) {									//ako ostane samo jedna
 		DodajK(sum, P->coef, P->exp);
 		P = P->Next;
 	}
@@ -304,10 +304,11 @@ int MakniDuple(Position Head)
 		}
 
 	}
+	BrisiNula(P);
 	return EXIT_SUCCESS;
 }
 
-/*int BrisiNula(Position Head) {
+int BrisiNula(Position Head) {
 	Position P = Head;
 	Position temp = NULL;
 
@@ -326,7 +327,7 @@ int MakniDuple(Position Head)
 
 
 	return EXIT_SUCCESS;
-}*/
+}
 
 int BrisisSve(Position Head) {
 	Position P = Head;

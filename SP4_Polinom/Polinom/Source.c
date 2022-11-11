@@ -176,13 +176,23 @@ int Ispis(Position Head) {
 			if (P->Next->coef > 0) {
 				printf("%dx^%d", P->Next->coef, P->Next->exp);
 				if (P->Next->Next != NULL) {
-					printf(" + ");
+					if (P->Next->Next->coef >= 0) {
+						printf(" + ");
+					}
+					else {
+						printf(" ");
+					}
 				}
 			}
 			else if (P->Next->coef < 0) {
-				printf("(%dx^%d)", P->Next->coef, P->Next->exp);
+				printf("%dx^%d", P->Next->coef, P->Next->exp);
 				if (P->Next->Next != NULL) {
-					printf(" + ");
+					if (P->Next->Next->coef >= 0) {
+						printf(" + ");
+					}
+					else {
+						printf(" ");
+					}
 				}
 			}
 		}
@@ -191,6 +201,9 @@ int Ispis(Position Head) {
 			if (P->Next->Next != NULL) {
 				printf(" + ");
 			}
+		}
+		else if (P->Next->coef == 0) {
+			P=BrisiNula(P);
 		}
 		P = P->Next;
 	}
@@ -304,29 +317,16 @@ int MakniDuple(Position Head)
 		}
 
 	}
-	BrisiNula(P);
 	return EXIT_SUCCESS;
 }
 
 int BrisiNula(Position Head) {
 	Position P = Head;
-	Position temp = NULL;
+	Position temp = Head->Next;
 
-	while (P->Next != NULL)
-		{
-			if (P->Next->coef == 0)
-			{
-				temp = P->Next;
-				P->Next = P->Next->Next;
-				free(temp);
-				break;
-			}
-			else
-				P = P->Next;
-		}
-
-
-	return EXIT_SUCCESS;
+	P->Next = temp->Next;
+	free(temp);
+	return P;
 }
 
 int BrisisSve(Position Head) {

@@ -1,163 +1,125 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
-#define PROGRAM_ERROR (-1)									
-#define MALLOC_ERROR (0)									//finito
-#define LINE_LENGTH 128										
+#define MAX_LINE (1024)									//P=Head
+#define PROGRAM_ERROR (-1)
+#define NOT_FOUND (0)
 
-struct _polinom;
-typedef struct _polinom* Position;
-typedef struct _polinom {
-	int coef;
-	int exp;
+struct osoba;
+typedef struct osoba* Position;
+struct osoba {
+	char ime[MAX_LINE];
+	char prezime[MAX_LINE];
+	int godina;
 	Position Next;
-}Polinom;
+};
 
-Position Stvori(void);
-int UnosDat(Position pHead, Position qHead);
-int UnosSort(Position Head, int coef, int exp);
-int Ispis(Position Head);
-int DodajK(Position sum, int coef, int exp);
-int Suma(Position pHead, Position qHead);
-int Umnozak(Position pHead, Position qHead);
-int MakniDuple(Position Head);						//poziva se u funkciji ispis
-int BrisiNula(Position Head);							//poziva se u funkciji ispis
-int BrisisSve(Position Head);
+int BrisiSve(Position P);
+int UnosP(Position P);
+int UnosK(Position P);
+Position Trazi(Position P);
+int Brisi(Position P);
+int Ispis(Position P);
+int UnosO(Position P);
+int UnosIza(Position P);
+int UnosIspred(Position P);
+int Sort(Position P);
+int UnosDat(Position P);
+int IspisDat(Position P);
 
 int main(void) {
-	Position pHead = NULL;
-	Position qHead = NULL;
-	Position sHead = NULL;
-	Position uHead = NULL;
+	struct osoba Head = {
+		.ime = {0},
+		.prezime = {0},
+		.godina = 0,
+		.Next = NULL
+	};
+	int op = 0;
 
-	pHead = Stvori();
-	qHead = Stvori();
+	do {
+		op = 0;
+		printf(
+			"*\t*\t*\t*\n"
+			"Odaberite zeljenu operaciju:\n"
+			"1) Dodaj na pocetak\n"
+			"2) Dodaj na kraj\n"
+			"3) Trazi po prezimenu\n"
+			"4) Brisi zeljeni element\n"
+			"5) Ispis liste\n"
+			"6) Unos iza osobe\n"
+			"7) Unos ispred osobe\n"
+			"8) Sortiranje osoba\n"
+			"9) Unos osoba u dokument\n"
+			"10) Ispis osoba iz dokument\n"
+			"0) Izlaz\n"
+			"*\t*\t*\t*\n");
+		scanf_s(" %d", &op);
 
-	UnosDat(pHead, qHead);	
+		switch (op) {
+		case 1:
+			printf("Odabrali ste unos na pocetak:\n");
+			UnosP(&Head);
+			break;
+		case 2:
+			printf("Odabrali ste unos na kraj:\n");
+			UnosK(&Head);
+			break;
+		case 3:
+			printf("Odabrali ste trazenje po prezimenu:\n");
+			Trazi(Head.Next);
+			break;
+		case 4:
+			printf("Odabrali ste brisanje osobe:\n");
+			Brisi(&Head);
+			break;
+		case 5:
+			printf("Odabrali ste ispis liste:\n");
+			Ispis(Head.Next);
+			break;
+		case 6:
+			printf("Odabrali ste unos iza osobe:\n");
+			UnosIza(&Head);
+			break;
+		case 7:
+			printf("Odabrali ste unos ispred osobe:\n");
+			UnosIspred(&Head);
+			break;
+		case 8:
+			printf("Odabrali ste sortiranje osoba:\n");
+			Sort(&Head);
+			break;
+		case 9:
+			printf("Odabrali ste unos osoba u dokument:\n");
+			UnosDat(Head.Next);
+			break;
+		case 10:
+			printf("Odabrali ste ispis osoba iz dokument:\n");
+			IspisDat(Head.Next);
+			break;
+		case 0:
+			printf("Odabrali ste izlaz:\n");
+			break;
+		}
+	} while (op != 0);
 
-	printf("Prva lista:\n");
-	Ispis(pHead);
-
-	printf("\nDruga lista:\n");
-	Ispis(qHead);
-
-
-	sHead = Suma(pHead, qHead);
-	if (sHead == NULL) {
-		printf("\nGreska u zbrajanju!");
-		return PROGRAM_ERROR;
-	}
-
-	printf("\nZbroj lista:\n");
-	Ispis(sHead);
-
-	uHead = Umnozak(pHead, qHead);
-	if (uHead == NULL) {
-		printf("\nGreska u mnozenju!");
-		return PROGRAM_ERROR;
-	}
-
-	printf("\nLista umnoska:\n");
-	Ispis(uHead);
-
-	BrisisSve(pHead);
-
-	BrisisSve(qHead);
-
-	BrisisSve(sHead);
-
-	BrisisSve(uHead);
-
-	printf("\nObrisao sam sve, kad ce vecera?");
-
+	printf("Ciscenje memorije je vrlo vazno...\n");
+	BrisiSve(&Head);
 	return EXIT_SUCCESS;
 }
 
-Position Stvori(void) {
-	Position Head = NULL;
-	Head = (Position)malloc(sizeof(Polinom));
+int UnosP(Position P) {
+	Position Q;
 
-	if (Head == NULL) {
-		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
-		return MALLOC_ERROR;
-	}
-
-	Head->Next = NULL;
-	Head->exp = 0;
-	Head->coef = 0;
-	return Head;
-}
-
-int UnosDat(Position pHead, Position qHead) {
-
-	int coef = 0, exp = 0, n = 0;
-	char buffer[LINE_LENGTH] = { 0 };
-	char* buf = NULL;
-	int unos = 0;
-
-	FILE* fp = NULL;										//otvaranje dokumenta
-	fp = fopen("polinom.txt", "r");
-
-	if (NULL == fp) {
-		printf("Doslo je do pogreske, dokument polinom.txt se nije otvorio!\r\n");
-		return PROGRAM_ERROR;
-	}
-
-	fgets(buffer, LINE_LENGTH, fp);
-	buf = buffer;
-
-	while (strlen(buf) != 0) {
-		sscanf_s(buf, "%d %d %n", &coef, &exp, &n);
-		if (coef == 0) {
-			buf += n;
-		}
-		else {
-			unos = UnosSort(pHead, coef, exp);
-			if (unos != 0)
-				return PROGRAM_ERROR;
-			buf += n;
-		}
-	}
-
-	fgets(buffer, LINE_LENGTH, fp);
-	buf = buffer;
-
-	while (strlen(buf) != 0) {
-		sscanf_s(buf, "%d %d %n", &coef, &exp, &n);
-		if (coef == 0) {
-			buf += n;
-		}
-		else {
-			unos = UnosSort(qHead, coef, exp);
-			if (unos != 0)
-				return PROGRAM_ERROR;
-			buf += n;
-		}
-	}
-
-	return EXIT_SUCCESS;
-}
-
-int UnosSort(Position Head, int coef, int exp) {
-
-	Position P = Head;
-	Position Q = NULL;
-	Position temp = NULL;
-
-	while (P->Next != NULL && P->Next->exp >= exp) {
-		P = P->Next;
-	}
-
-	Q = (Position)malloc(sizeof(Polinom));
+	Q = (Position)malloc(sizeof(struct osoba));
 
 	if (Q == NULL) {
 		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
 		return PROGRAM_ERROR;
 	}
 
-	Q->coef = coef;
-	Q->exp = exp;
+	UnosO(Q);
 
 	Q->Next = P->Next;
 	P->Next = Q;
@@ -165,178 +127,233 @@ int UnosSort(Position Head, int coef, int exp) {
 	return EXIT_SUCCESS;
 }
 
-int Ispis(Position Head) {
-
-	Position P = Head;
-	MakniDuple(P);
-
+int UnosK(Position P) {
+	Position Q;
 
 	while (P->Next != NULL) {
-		if (P->Next->exp != 0) {
-			if (P->Next->coef > 0) {
-				printf("%dx^%d", P->Next->coef, P->Next->exp);
-				if (P->Next->Next != NULL) {
-					printf(" + ");
-				}
-			}
-			else if (P->Next->coef < 0) {
-				printf("(%dx^%d)", P->Next->coef, P->Next->exp);
-				if (P->Next->Next != NULL) {
-					printf(" + ");
-				}
-			}
-		}
-		else if(P->Next->exp==0){
-			printf("%d", P->Next->coef);
-			if (P->Next->Next != NULL) {
-				printf(" + ");
-			}
-		}
+		P = P->Next;
+	}
+
+	Q = (Position)malloc(sizeof(struct osoba));
+
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
+	}
+
+	UnosO(Q);
+	P->Next = Q;
+	Q->Next = NULL;
+
+	return EXIT_SUCCESS;
+}
+
+Position Trazi(Position P) {
+	char trazenoPrezime[MAX_LINE] = { 0 };
+	int brojac = 1;
+
+	printf("Unesite prezime trazene osobe: ");
+	scanf_s(" %s", trazenoPrezime, MAX_LINE);
+
+	while (P != NULL && strcmp(trazenoPrezime, P->prezime) != 0) {
+		P = P->Next;
+		brojac++;
+	}
+
+	if (P != NULL) {
+		printf("Trazena osoba nalazi se na %d. mjestu.\n", brojac);
+		return P;
+	}
+	else {
+		printf("Nije pronadena trazena osoba!");
+		return NOT_FOUND;
+	}
+}
+
+
+int Brisi(Position P) {
+	char tempPrezime[MAX_LINE] = { 0 };
+	Position temp = NULL;
+
+	printf("Unesite prezime trazene osobe: ");
+	scanf_s("%s", tempPrezime, MAX_LINE);
+
+	while (P->Next != NULL && strcmp(tempPrezime, P->Next->prezime) != 0) {
+		P = P->Next;
+	}
+	temp = P->Next;
+	if (temp != NULL) {
+		P->Next = temp->Next;
+		free(temp);
+	}
+	else {
+		printf("Trazena osoba nije upisana u strukturu");
+		return PROGRAM_ERROR;
+	}
+	return EXIT_SUCCESS;
+}
+
+int Ispis(Position P) {
+	while (P != NULL) {
+		printf("%s ", P->ime);
+		printf("%s ", P->prezime);
+		printf("%d\n", P->godina);
 		P = P->Next;
 	}
 	printf("\n");
 	return EXIT_SUCCESS;
 }
 
-int DodajK(Position sum, int coef, int exp) {
-
-	Position P = sum;
-	Position Q = NULL;
-
-	while (P->Next != NULL) {
-		P = P->Next;
+int BrisiSve(Position P) {
+	Position temp;
+	while (P->Next != NULL)
+	{
+		temp = P->Next;
+		P->Next = temp->Next;
+		free(temp);
 	}
+	return EXIT_SUCCESS;
+}
 
-	Q = (Position)malloc(sizeof(Polinom));
+int UnosO(Position P) {
+	printf("Ime nove osobe: ");
+	scanf_s("%s", P->ime, MAX_LINE);
+	printf("Prezime nove osobe: ");
+	scanf_s("%s", P->prezime, MAX_LINE);
+	printf("Godina rodenja nove osobe: ");
+	scanf_s("%d", &(P->godina));
+
+	return EXIT_SUCCESS;
+}
+
+int UnosIza(Position P) {
+	Position Q;
+	char trazenoPrezime[MAX_LINE] = { 0 };
+
+	Q = (Position)malloc(sizeof(struct osoba));
 
 	if (Q == NULL) {
 		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
 		return PROGRAM_ERROR;
 	}
 
-	Q->coef = coef;
-	Q->exp = exp;
+	printf("Unesite prezime trazene osobe: ");
+	scanf_s("%s", trazenoPrezime, MAX_LINE);
 
-	Q->Next = P->Next;
-	P->Next = Q;
+	while (P != NULL && strcmp(trazenoPrezime, P->prezime) != 0) {
+		P = P->Next;
+	}
 
+	if (P != NULL) {
+		UnosO(Q);
+		Q->Next = P->Next;
+		P->Next = Q;
+	}
+	else {
+		printf("Nije pronadena trazena osoba!");
+		return PROGRAM_ERROR;
+	}
 	return EXIT_SUCCESS;
 }
 
-int Suma(Position pHead, Position qHead) {
+int UnosIspred(Position P) {
+	Position Q;
+	char trazenoPrezime[MAX_LINE] = { 0 };
 
-	Position P = pHead->Next;
-	Position Q = qHead->Next;
-	Position sum = NULL;
+	Q = (Position)malloc(sizeof(struct osoba));
 
-	sum = Stvori();
-
-	while (P != NULL && Q != NULL) {
-
-		if (P->exp > Q->exp) {							//ako je potencija prvog veca od drugog
-			DodajK(sum, P->coef, P->exp);
-			P = P->Next;
-		}
-
-		else if (P->exp < Q->exp) {						//ako je potencija drugog veca od prvog
-			DodajK(sum, Q->coef, Q->exp);
-			Q = Q->Next;
-		}
-
-		else if (P->exp == Q->exp){											//ako su iste potencije
-			DodajK(sum, P->coef + Q->coef, P->exp);
-			P = P->Next;
-			Q = Q->Next;
-		}
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
 	}
 
-	while (P != NULL) {									//ako ostane samo jedna
-		DodajK(sum, P->coef, P->exp);
+	printf("Unesite prezime trazene osobe: ");
+	scanf_s("%s", trazenoPrezime, MAX_LINE);
+
+	while (P->Next != NULL && strcmp(trazenoPrezime, P->Next->prezime) != 0) {
 		P = P->Next;
 	}
-	while (Q != NULL) {
-		DodajK(sum, Q->coef, Q->exp);
-		Q = Q->Next;
+
+	if (P->Next != NULL) {
+		UnosO(Q);
+		Q->Next = P->Next;
+		P->Next = Q;
+	}
+	else {
+		printf("Nije pronadena trazena osoba!");
+		return PROGRAM_ERROR;
+	}
+	return EXIT_SUCCESS;
+}
+int Sort(Position P) {																//NEMOJ VIŠE NIKAD BUBLE!!!!!!!
+	Position Q, prev_Q, temp, end;
+
+	Q = (Position)malloc(sizeof(struct osoba));
+
+	if (Q == NULL) {
+		printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+		return PROGRAM_ERROR;
 	}
 
-	return sum;
+	end = NULL;
+
+	while (P->Next != end) {
+		prev_Q = P;
+		Q = P->Next;
+		while (Q->Next != end) {
+			if (strcmp(Q->prezime, Q->Next->prezime) > 0) {
+				temp = Q->Next;
+				prev_Q->Next = temp;
+				Q->Next = temp->Next;
+				temp->Next = Q;
+
+				Q = temp;
+			}
+			prev_Q = Q;
+			Q = Q->Next;
+		}
+		end = Q;
+	}
+	return EXIT_SUCCESS;
 }
 
-int Umnozak(Position pHead, Position qHead) {
+int UnosDat(Position P) {
 
-	Position P = pHead->Next;
-	Position Q = qHead->Next;
-	Position umn = NULL;
+	FILE* fp = NULL;
 
-	umn = Stvori();
+	fp = fopen("Osobe.txt", "w");
+	if (NULL == fp) {
+		printf("Doslo je do pogreske, dokument Osobe.txt se nije otvorio!\r\n");
+		return PROGRAM_ERROR;
+	}
 
 	while (P != NULL) {
-		while (Q != NULL) {
-			UnosSort(umn, P->coef * Q->coef, P->exp + Q->exp);
-			Q = Q->Next;
-		}
+		fprintf(fp, "\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n", P->ime, P->prezime, P->godina);
 		P = P->Next;
-		Q = qHead->Next;
 	}
-	return umn;
+	fclose(fp);
+	return EXIT_SUCCESS;
 }
 
-int MakniDuple(Position Head)
-{
-	Position P = Head;
-	Position Q  =NULL;
+int IspisDat(Position P) {
+	char ime[MAX_LINE] = { 0 };
+	char prezime[MAX_LINE] = { 0 };
+	int godina = 0;
 
-	if (P == NULL)
+	FILE* fp = NULL;
+
+	fp = fopen("Osobe.txt", "r");
+	if (NULL == fp) {
+		printf("Doslo je do pogreske, dokument Osobe.txt se nije otvorio!\r\n");
 		return PROGRAM_ERROR;
-
-	while (P->Next != NULL)
-	{
-		if (P->exp == P->Next->exp)					//ako uzastopne pozicije imaju isti eksponent, zbraja koeficijente, brise visak
-		{
-			P->coef = P->coef + P->Next->coef;
-			Q = P->Next->Next;
-			free(P->Next);
-			P->Next = Q;
-		}
-		else
-		{
-			P = P->Next;
-		}
-
 	}
-	BrisiNula(P);
-	return EXIT_SUCCESS;
-}
 
-int BrisiNula(Position Head) {
-	Position P = Head;
-	Position temp = NULL;
-
-	while (P->Next != NULL)
-		{
-			if (P->Next->coef == 0)
-			{
-				temp = P->Next;
-				P->Next = P->Next->Next;
-				free(temp);
-				break;
-			}
-			else
-				P = P->Next;
-		}
-
-
-	return EXIT_SUCCESS;
-}
-
-int BrisisSve(Position Head) {
-	Position P = Head;
-	Position temp = NULL;
-	while (P ->Next != NULL)
-	{
-		temp = P->Next;
-		P->Next = temp->Next;
-		free(temp);
+	while (P != NULL) {
+		fscanf(fp, "\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n", &ime, &prezime, &godina);
+		printf("\nIme osobe: %s\nPrezime osobe: %s\nGodina rodenja: %d\n", ime, prezime, godina);
+		P = P->Next;
 	}
+	fclose(fp);
+
 	return EXIT_SUCCESS;
 }

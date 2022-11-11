@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define PROGRAM_ERROR (-1)									
-#define MALLOC_ERROR (0)									//treba dodati za slucaj kada je exp 0
+#define MALLOC_ERROR (0)									//finito
 #define LINE_LENGTH 128										
 
 struct _polinom;

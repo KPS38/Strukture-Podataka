@@ -1,7 +1,7 @@
 ﻿  Source.c
-C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Polinom\Source.c(41,28): warning C4047: '=': 'Position' differs in levels of indirection from 'int'
-C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Polinom\Source.c(49,31): warning C4047: '=': 'Position' differs in levels of indirection from 'int'
-C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Polinom\Source.c(101,15): warning C4013: 'strlen' undefined; assuming extern returning int
-C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Polinom\Source.c(235,12): warning C4047: 'return': 'int' differs in levels of indirection from 'Position'
-C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Polinom\Source.c(255,12): warning C4047: 'return': 'int' differs in levels of indirection from 'Position'
-  Polinom.vcxproj -> C:\Users\Pjero\Desktop\Main 2\Misto\SP4_Polinom\Debug\Polinom.exe
+C:\Users\KPS\Desktop\Misto\SP4_Polinom\Polinom\Source.c(46,28): warning C4047: '=': 'Position' differs in levels of indirection from 'int'
+C:\Users\KPS\Desktop\Misto\SP4_Polinom\Polinom\Source.c(55,31): warning C4047: '=': 'Position' differs in levels of indirection from 'int'
+C:\Users\KPS\Desktop\Misto\SP4_Polinom\Polinom\Source.c(110,15): warning C4013: 'strlen' undefined; assuming extern returning int
+C:\Users\KPS\Desktop\Misto\SP4_Polinom\Polinom\Source.c(277,12): warning C4047: 'return': 'int' differs in levels of indirection from 'Position'
+C:\Users\KPS\Desktop\Misto\SP4_Polinom\Polinom\Source.c(296,12): warning C4047: 'return': 'int' differs in levels of indirection from 'Position'
+  Polinom.vcxproj -> C:\Users\KPS\Desktop\Misto\SP4_Polinom\Debug\Polinom.exe

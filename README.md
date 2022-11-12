@@ -1,4 +1,4 @@
 # Misto
 
-Prvi i drugi domaci rijesen
+Prvi, drugi, treci i cetvrti domaci rijesen
 

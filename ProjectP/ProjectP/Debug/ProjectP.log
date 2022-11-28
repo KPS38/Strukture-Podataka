@@ -1,3 +1,5 @@
-﻿  Source.cpp
-C:\Users\Pjero\Desktop\Repozitorij\pbranch\ProjectP\ProjectP\Source.cpp(81,11): warning C4101: 'prev': unreferenced local variable
-  ProjectP.vcxproj -> C:\Users\Pjero\Desktop\Repozitorij\pbranch\ProjectP\Debug\ProjectP.exe
+﻿  Source.c
+C:\Users\Pjero\Desktop\pbranch\Misto\ProjectP\ProjectP\Source.c(42,24): warning C4047: '=': 'int' differs in levels of indirection from 'Pozicija'
+C:\Users\Pjero\Desktop\pbranch\Misto\ProjectP\ProjectP\Source.c(45,28): warning C4047: '=': 'int' differs in levels of indirection from 'Pozicija'
+C:\Users\Pjero\Desktop\pbranch\Misto\ProjectP\ProjectP\Source.c(31,11): warning C4101: 'P': unreferenced local variable
+  ProjectP.vcxproj -> C:\Users\Pjero\Desktop\pbranch\Misto\ProjectP\Debug\ProjectP.exe

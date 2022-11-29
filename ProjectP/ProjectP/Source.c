@@ -14,6 +14,8 @@ struct Cvor {
 int UnosP(int x, Pozicija P);
 int UnosK(int x, Pozicija P);
 int UnosSort(int x, Pozicija P);
+int UnosIza(int x, int y, Pozicija P);
+int UnosIspred(int x, int y, Pozicija P);
 
 int Ispis(Pozicija P);
 
@@ -60,6 +62,13 @@ int main() {
 
 	Ispis(Head.Next);
 
+	printf("\n");
+
+	UnosIza(1, 3, Head.Next);
+	UnosIspred(7, 3, &Head);
+
+	Ispis(Head.Next);
+
 	BrisiSveMin(&Head);
 
 	return EXIT_SUCCESS;
@@ -89,6 +98,62 @@ int UnosK(int x, Pozicija P) {
 	Q->Next = NULL;
 
 	return EXIT_SUCCESS;
+}
+
+int UnosSort(int x, Pozicija P) {
+	Pozicija Q;
+	Q = (Pozicija)malloc(sizeof(struct Cvor));
+
+	while (P->Next != NULL && P->Next->El < x) {
+		P = P->Next;
+	}
+
+	Q->El = x;
+	Q->Next = P->Next;
+	P->Next = Q;
+
+	return EXIT_SUCCESS;
+}
+
+int UnosIza(int x, int y, Pozicija P) {
+	Pozicija Q;
+	
+	P = Trazi(y, P);
+
+	if (NULL == P) {
+		printf("Greska!");
+		return -1;
+	}
+	else {
+		Q = (Pozicija)malloc(sizeof(struct Cvor));
+
+		Q->El = x;
+		Q->Next = P->Next;
+		P->Next = Q;
+	}
+	return 0;
+}
+
+int UnosIspred(int x, int y, Pozicija P) {
+	Pozicija Q;
+
+	while (P->Next != NULL && P->Next->El != y) {
+		P = P->Next;
+	}
+
+	if (NULL == P->Next) {
+		printf("Greska!");
+		return -1;
+	}
+
+	else {
+		Q = (Pozicija)malloc(sizeof(struct Cvor));
+
+		Q->El = x;
+		Q->Next = P->Next;
+		P->Next = Q;
+	}
+	return 0;
 }
 
 int Ispis(Pozicija P) {
@@ -122,20 +187,6 @@ Pozicija TraziPret(int x, Pozicija P) {
 	return Prev;
 }
 
-int UnosSort(int x, Pozicija P) {
-	Pozicija Q;
-	Q = (Pozicija)malloc(sizeof(struct Cvor));
-
-	while (P->Next != NULL && P->Next->El < x) {
-		P = P->Next;
-	}
-
-	Q->El = x;
-	Q->Next = P->Next;
-	P->Next = Q;
-
-	return EXIT_SUCCESS;
-}
 
 int Brisi(int x, Pozicija P) {
 	Pozicija temp = NULL;

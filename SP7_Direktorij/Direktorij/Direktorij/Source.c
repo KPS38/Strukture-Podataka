@@ -18,10 +18,17 @@ typedef struct tree_node
 }Node;
 
 // "md" - napravi novi direktorij
-// "cd dir" - promijena direktorija 
+// "cd dir" - promjena direktorija 
 // "cd.." - povratak na roditeljski direktorij
 //"dir" - vidi sadrzaje direktorija
 //"izlaz" - obrisi sve i kraj programa
+
+Position StvoriPrazno(Position S);
+Position Trazi(char X, Position S);
+Position Dodaj(char X, Position S);
+Position Brisi(char X, Position S);
+Position BrisiSve(Position S);
+void Ispis(Position S);
 
 int main(void) {
 
@@ -33,11 +40,11 @@ int main(void) {
 	char cmd[LINE_LENGTH] = { 0 };
 	char dir_name[LINE_LENGTH] = { 0 };
 	do {
-		printf("C:\>");
+		printf("%s:>", Root.dir);
 		scanf(" %s", cmd);
 		if (strcmp(cmd, "md") == 0)
 		{
-			printf("Odabrali ste unos novog direktroija, unesite ime: ");
+			printf("***Unos direktorija***\nUnesite ime> ");
 			scanf(" %s", dir_name);
 		}
 		else if (strcmp(cmd, "cd dir") == 0)
@@ -56,11 +63,15 @@ int main(void) {
 		{
 			// do something else
 		}
-		else /* default: */
+		else if (strcmp(cmd, "izlaz") == 0) {
+			printf("***Brisanje stabla***\n");
+			BrisiSve(Root.FC);
+		}
+		else 
 		{
 			printf("Nepostojeca komanda, podjsetnik postojecih:\nmd\tcd dir\tcd..\tdir\tizlaz\n");
 		}
-	} while (strcmp(cmd, "izlaz") == 0);
+	} while (strcmp(cmd, "izlaz") != 0);
 
 	printf("Kraj programa\n");
 

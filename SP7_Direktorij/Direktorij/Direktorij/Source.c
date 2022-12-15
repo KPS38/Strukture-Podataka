@@ -61,9 +61,9 @@ int main(void) {
 	int status = 0;
 
 	do {
-		printf("Postojeca komande: md /cd dir /cd.. /dir /izlaz ");
+		printf("\nPostojece komande: md /cd dir /cd.. /dir /izlaz ");
 		printf("\nc:\\%s>", Root.naziv);
-		scanf_s(" %s", cmd, LINE_LENGTH);
+		gets(cmd);
 		if (strcmp(cmd, "md") == 0)
 		{
 			status = Stvori(current);
@@ -84,7 +84,7 @@ int main(void) {
 		else if (strcmp(cmd, "cd..") == 0)
 		{
 			if (current == &Root) {
-				printf("\nVec ste u tom folderu!");
+				printf("\nVec ste u tom folderu!\n");
 			}
 			current = VracanjeNatrag(&Head);
 			if (NULL == current) {
@@ -102,7 +102,7 @@ int main(void) {
 		}
 		else 
 		{
-			printf("Nepostojeca komanda, podjsetnik postojecih:\nmd\tcd dir\tcd..\tdir\tizlaz\n");
+			printf("\nNepostojeca komanda :(");
 		}
 	} while (strcmp(cmd, "izlaz") != 0);
 
@@ -116,7 +116,7 @@ int Stvori(Position S) {
 	Position Q = NULL;
 	char dir_name[LINE_LENGTH] = { 0 };
 
-	printf("***Unos direktorija***\nUnesite ime> ");
+	printf("\n***Unos direktorija***\nUnesite ime> ");
 	scanf_s(" %s", dir_name, LINE_LENGTH);
 
 	if (NULL == P->child) {

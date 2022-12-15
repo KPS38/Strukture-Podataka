@@ -44,7 +44,7 @@ int BrisiStog (Pos P);
 int main(void) {
 
 	Dir Root = {
-		.naziv = "Users",
+		.naziv = "User",
 		.child = NULL,
 		.sibling = NULL
 	};
@@ -57,10 +57,10 @@ int main(void) {
 	Position current = &Root;
 	Position temp = NULL;
 
-	char cmd[LINE_LENGTH] = { 0 };
+	char cmd[LINE_LENGTH] = { '\0' };
 	int status = 0;
 
-	do {
+	while (strcmp(cmd, "izlaz") != 0) {
 		printf("\nPostojece komande: md /cd dir /cd.. /dir /izlaz ");
 		printf("\nc:\\%s>", Root.naziv);
 		gets(cmd);
@@ -86,9 +86,11 @@ int main(void) {
 			if (current == &Root) {
 				printf("\nVec ste u tom folderu!\n");
 			}
-			current = VracanjeNatrag(&Head);
-			if (NULL == current) {
-				return MALLOC_ERROR;
+			else {
+				current = VracanjeNatrag(&Head);
+				if (NULL == current) {
+					return MALLOC_ERROR;
+				}
 			}
 		}
 		else if (strcmp(cmd, "dir") == 0)
@@ -104,7 +106,7 @@ int main(void) {
 		{
 			printf("\nNepostojeca komanda :(");
 		}
-	} while (strcmp(cmd, "izlaz") != 0);
+	}
 
 	printf("Kraj programa\n");
 
@@ -114,7 +116,7 @@ int main(void) {
 int Stvori(Position S) {
 	Position P = S;
 	Position Q = NULL;
-	char dir_name[LINE_LENGTH] = { 0 };
+	char dir_name[LINE_LENGTH] = { '\0' };
 
 	printf("\n***Unos direktorija***\nUnesite ime> ");
 	scanf_s(" %s", dir_name, LINE_LENGTH);
@@ -132,7 +134,7 @@ int Stvori(Position S) {
 		strcpy(Q->naziv, dir_name);
 		Q->child = NULL;
 
-		printf("\nKreiran novi direktorij %s!", dir_name);
+		printf("\nKreiran novi direktorij: %s", dir_name);
 
 		return EXIT_SUCCESS;
 	}
@@ -149,7 +151,7 @@ int Stvori(Position S) {
 			strcpy(Q->naziv, dir_name);
 			Q->child = NULL;
 
-			printf("\nKreiran novi direktorij %s!", dir_name);
+			printf("\nKreiran novi direktorij: %s", dir_name);
 
 			return EXIT_SUCCESS;
 		}
@@ -168,7 +170,7 @@ int Stvori(Position S) {
 		strcpy(Q->naziv, dir_name);
 		Q->child = NULL;
 
-		printf("\nKreiran novi direktorij %s!", dir_name);
+		printf("\nKreiran novi direktorij: %s!", dir_name);
 	}
 
 	return EXIT_SUCCESS;
@@ -195,7 +197,7 @@ Position Ulaz(Position S, Pos P) {
 	}
 	S = Q;
 
-	printf("\nOdabran direktorij %s!", S->naziv);
+	printf("\nOdabran direktorij: %s!", S->naziv);
 
 	return S;
 }

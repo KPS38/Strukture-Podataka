@@ -12,10 +12,19 @@ typedef struct tree_node* Position;
 
 typedef struct tree_node
 {
-	char dir[LINE_LENGTH];
-	Position FC;						//FC - first child
-	Position NS;						//NS - next sibling
-}Node;
+	char naziv[LINE_LENGTH];
+	Position child;
+	Position sibling;
+}Dir;
+
+struct stack;
+typedef struct stack* Pos;
+
+typedef struct stack
+{
+	Position Prethodna;
+	Pos Next;
+}Stog;
 
 // "md" - napravi novi direktorij
 // "cd dir" - promjena direktorija 
@@ -23,49 +32,73 @@ typedef struct tree_node
 //"dir" - vidi sadrzaje direktorija
 //"izlaz" - obrisi sve i kraj programa
 
-Position StvoriPrazno(Position S);
-Position Trazi(char X, Position S);
-Position Dodaj(char X, Position S);
-Position Brisi(char X, Position S);
-Position BrisiSve(Position S);
-void Ispis(Position S);
+int Stvori (Position S);
+Position Ulaz (Position S, Pos P);
+int DodajNaStog (Position S, Pos P);
+Position VracanjeNatrag (Pos P);
+int MakniSaStoga (Pos P);
+int Ispis (Position S);
+int BrisiSve (Position S);
+int BrisiStog (Pos P);
 
 int main(void) {
 
-	Node Root = {
-		.dir = "User",
-		.FC = NULL,
-		.NS = NULL
+	Dir Root = {
+		.naziv = "Users",
+		.child = NULL,
+		.sibling = NULL
 	};
+
+	Stog Head = {
+		.Next = NULL,
+		.Prethodna = NULL,
+	};
+
+	Position current = &Root;
+	Position temp = NULL;
+
 	char cmd[LINE_LENGTH] = { 0 };
-	char dir_name[LINE_LENGTH] = { 0 };
+	int status = 0;
+
 	do {
-		printf("%s:>", Root.dir);
-		scanf(" %s", cmd);
+		printf("Postojeca komande: md /cd dir /cd.. /dir /izlaz ");
+		printf("\nc:\\%s>", Root.naziv);
+		scanf_s(" %s", cmd);															//nesto zeza kod unosa komandi, mozemo provat s switch case
 		if (strcmp(cmd, "md") == 0)
 		{
-			printf("***Unos direktorija***\nUnesite ime> ");
-			scanf(" %s", dir_name);
+			status = Stvori(current);
+			if (status != 0) {
+				return MALLOC_ERROR;
+			}
 		}
 		else if (strcmp(cmd, "cd dir") == 0)
 		{
-			// do something else
-		}
-		else if (strcmp(cmd, "cd dir") == 0)
-		{
-			// do something else
+			temp = Ulaz(current, &Head);
+			if (temp != NULL) {
+				current = temp;
+			}
+			else {
+				printf("\nNije pronaden odgovarajuci direktorij!");
+			}
 		}
 		else if (strcmp(cmd, "cd..") == 0)
 		{
-			// do something else
+			if (current == &Root) {
+				printf("\nVec ste u tom folderu!");
+			}
+			current = VracanjeNatrag(&Head);
+			if (NULL == current) {
+				return MALLOC_ERROR;
+			}
 		}
 		else if (strcmp(cmd, "dir") == 0)
 		{
-			// do something else
+			Ispis(current);
 		}
 		else if (strcmp(cmd, "izlaz") == 0) {
 			printf("***Brisanje stabla***\n");
-			BrisiSve(Root.FC);
+			BrisiStog(Head.Next);
+			BrisiSve(Root.child);
 		}
 		else 
 		{
@@ -78,7 +111,164 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 
+int Stvori(Position S) {
+	Position P = S;
+	Position Q = NULL;
+	char dir_name[LINE_LENGTH] = { 0 };
 
+	printf("***Unos direktorija***\nUnesite ime> ");
+	scanf_s(" %s", dir_name);
 
+	if (NULL == P->child) {
 
+		Q = (Position)malloc(sizeof(Dir));
+		if (NULL == Q) {
+			printf("\nGreska u alociranju memorije!");
+			return MALLOC_ERROR;
+		}
 
+		P->child = Q;
+		Q->sibling = NULL;
+		strcpy(Q->naziv, dir_name);
+		Q->child = NULL;
+
+		printf("\nKreiran novi direktorij %s!", dir_name);
+
+		return EXIT_SUCCESS;
+	}
+	else {
+		if (strcmp(P->child->naziv, dir_name) > 0) {
+
+			Q = (Position)malloc(sizeof(Dir));
+			if (NULL == Q) {
+				printf("\nGreska u alociranju memorije!");
+				return MALLOC_ERROR;
+			}
+			Q->sibling = P->child;
+			P->child = Q;
+			strcpy(Q->naziv, dir_name);
+			Q->child = NULL;
+
+			printf("\nKreiran novi direktorij %s!", dir_name);
+
+			return EXIT_SUCCESS;
+		}
+		P = P->child;
+		while (P->sibling != NULL && strcmp(P->sibling->naziv, dir_name) < 0) {
+			P = P->sibling;
+		}
+		Q = (Position)malloc(sizeof(Dir));
+		if (NULL == Q) {
+			printf("\nGreska u alociranju memorije!");
+			return MALLOC_ERROR;
+		}
+
+		Q->sibling = P->sibling;
+		P->sibling = Q;
+		strcpy(Q->naziv, dir_name);
+		Q->child = NULL;
+
+		printf("\nKreiran novi direktorij %s!", dir_name);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+Position Ulaz(Position S, Pos P) {
+	char dir_name[LINE_LENGTH] = { 0 };
+
+	printf("\nUnesite ime odabranog direktorija: ");
+	scanf_s("%s", dir_name);
+
+	Position Q = S->child;
+	int status = 0;
+
+	while (Q != NULL && strcmp(Q->naziv, dir_name) != 0) {
+		Q = Q->sibling;
+	}
+	if (NULL == Q) {
+		return NULL;
+	}
+	status = DodajNaStog(S, P);
+	if (status != 0) {
+		return NULL;
+	}
+	S = Q;
+
+	printf("\nOdabran direktorij %s!", S->naziv);
+
+	return S;
+}
+
+int DodajNaStog(Position S, Pos P) {
+	Pos Q = NULL;
+	Q = (Pos)malloc(sizeof(Stog));
+	if (NULL == Q) {
+		return MALLOC_ERROR;
+	}
+
+	Q->Next = P->Next;
+	P->Next = Q;
+
+	Q->Prethodna = S;
+
+	return EXIT_SUCCESS;
+}
+
+Position VracanjeNatrag(Pos P) {
+	Position current = NULL;
+	current = P->Next->Prethodna;
+	MakniSaStoga(P);
+
+	printf("\nVratili ste se u direktorij %s", current->naziv);
+
+	return current;
+}
+
+int MakniSaStoga(Pos P) {
+	Pos temp = NULL;
+
+	temp = P->Next;
+	P->Next = temp->Next;
+	free(temp);
+
+	return EXIT_SUCCESS;
+}
+
+int Ispis(Position S) {
+	Position P = S->child;
+	printf("\nDatoteke u direktriju %s su: ", S->naziv);
+	while (P != NULL) {
+		printf("\n> %s", P->naziv);
+		P = P->sibling;
+	}
+	printf("\n*****************************");
+	return EXIT_SUCCESS;
+}
+
+int BrisiStog(Pos P) {
+	if (NULL == P) {
+		return EXIT_SUCCESS;
+	}
+	if (P->Next != NULL) {
+		BrisiStog(P->Next);
+	}
+	free(P);
+
+	return EXIT_SUCCESS;
+}
+
+int BrisiSve(Position S) {
+	if (NULL == S) {
+		return EXIT_SUCCESS;
+	}
+	if (S->child != NULL) {
+		BrisiSve(S->child);
+	}
+	if (S->sibling != NULL) {
+		BrisiSve(S->sibling);
+	}
+	free(S);
+
+	return EXIT_SUCCESS;
+}

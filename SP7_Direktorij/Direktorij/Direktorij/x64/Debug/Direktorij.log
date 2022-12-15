@@ -1,0 +1,14 @@
+﻿  Source.c
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,11): warning C4473: 'scanf_s' : not enough arguments passed for format string
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,11): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,11): message : the missing variadic argument 2 is required by format string '%s'
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,11): message : this argument is used as a buffer size
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(120,10): warning C4473: 'scanf_s' : not enough arguments passed for format string
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(120,10): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(120,10): message : the missing variadic argument 2 is required by format string '%s'
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(120,10): message : this argument is used as a buffer size
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(181,10): warning C4473: 'scanf_s' : not enough arguments passed for format string
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(181,10): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(181,10): message : the missing variadic argument 2 is required by format string '%s'
+C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(181,10): message : this argument is used as a buffer size
+  Direktorij.vcxproj -> C:\Users\Pjero\Desktop\Mian\Misto\SP7_Direktorij\Direktorij\x64\Debug\Direktorij.exe

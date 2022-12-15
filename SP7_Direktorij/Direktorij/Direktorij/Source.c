@@ -106,6 +106,7 @@ int main(void) {
 		{
 			printf("\nNepostojeca komanda :(");
 		}
+		(void)getchar();
 	}
 
 	printf("Kraj programa\n");

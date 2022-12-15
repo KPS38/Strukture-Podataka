@@ -1,3 +1,3 @@
 ﻿  Source.c
-C:\Users\KPS\Desktop\Vaza\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,7): warning C4013: 'gets' undefined; assuming extern returning int
-  Direktorij.vcxproj -> C:\Users\KPS\Desktop\Vaza\Misto\SP7_Direktorij\Direktorij\x64\Debug\Direktorij.exe
+C:\Users\Pjero\Desktop\Main\Misto\SP7_Direktorij\Direktorij\Direktorij\Source.c(66,7): warning C4013: 'gets' undefined; assuming extern returning int
+  Direktorij.vcxproj -> C:\Users\Pjero\Desktop\Main\Misto\SP7_Direktorij\Direktorij\x64\Debug\Direktorij.exe

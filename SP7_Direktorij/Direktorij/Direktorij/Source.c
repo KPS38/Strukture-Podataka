@@ -63,7 +63,7 @@ int main(void) {
 	do {
 		printf("Postojeca komande: md /cd dir /cd.. /dir /izlaz ");
 		printf("\nc:\\%s>", Root.naziv);
-		scanf_s(" %s", cmd);															//nesto zeza kod unosa komandi, mozemo provat s switch case
+		scanf_s(" %s", cmd, LINE_LENGTH);
 		if (strcmp(cmd, "md") == 0)
 		{
 			status = Stvori(current);
@@ -117,7 +117,7 @@ int Stvori(Position S) {
 	char dir_name[LINE_LENGTH] = { 0 };
 
 	printf("***Unos direktorija***\nUnesite ime> ");
-	scanf_s(" %s", dir_name);
+	scanf_s(" %s", dir_name, LINE_LENGTH);
 
 	if (NULL == P->child) {
 
@@ -178,7 +178,7 @@ Position Ulaz(Position S, Pos P) {
 	char dir_name[LINE_LENGTH] = { 0 };
 
 	printf("\nUnesite ime odabranog direktorija: ");
-	scanf_s("%s", dir_name);
+	scanf_s("%s", dir_name, LINE_LENGTH);
 
 	Position Q = S->child;
 	int status = 0;

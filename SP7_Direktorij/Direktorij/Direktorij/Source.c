@@ -61,9 +61,13 @@ int main(void) {
 	int status = 0;
 
 	while (strcmp(cmd, "izlaz") != 0) {
+
 		printf("\nPostojece komande: md /cd dir /cd.. /dir /izlaz ");
 		printf("\nc:\\%s>", Root.naziv);
-		gets(cmd);
+		fgets(cmd, LINE_LENGTH, stdin);
+		int len = strlen(cmd);
+		cmd[len - 1] = '\0';
+
 		if (strcmp(cmd, "md") == 0)
 		{
 			status = Stvori(current);

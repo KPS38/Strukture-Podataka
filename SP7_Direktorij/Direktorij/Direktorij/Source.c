@@ -26,20 +26,22 @@ typedef struct stack
 	Pos Next;
 }Stog;
 
+char direktoriji[LINE_LENGTH] = "User";
 // "md" - napravi novi direktorij
 // "cd dir" - promjena direktorija 
 // "cd.." - povratak na roditeljski direktorij
 //"dir" - vidi sadrzaje direktorija
 //"izlaz" - obrisi sve i kraj programa
 
-int Stvori (Position S);
-Position Ulaz (Position S, Pos P);
-int DodajNaStog (Position S, Pos P);
-Position VracanjeNatrag (Pos P);
-int MakniSaStoga (Pos P);
-int Ispis (Position S);
-int BrisiSve (Position S);
-int BrisiStog (Pos P);
+int Stvori(Position S);
+Position Ulaz(Position S, Pos P);
+int DodajNaStog(Position S, Pos P);
+Position VracanjeNatrag(Pos P);
+int MakniSaStoga(Pos P);
+int Ispis(Position S);
+int BrisiSve(Position S);
+int BrisiStog(Pos P);
+char* strremove(char* str, const char* sub);
 
 int main(void) {
 
@@ -63,7 +65,7 @@ int main(void) {
 	while (strcmp(cmd, "izlaz") != 0) {
 
 		printf("\nPostojece komande: md /cd dir /cd.. /dir /izlaz ");
-		printf("\nc:\\%s>", Root.naziv);
+		printf("\nc:\\%s>", direktoriji);
 		fgets(cmd, LINE_LENGTH, stdin);
 		int len = strlen(cmd);
 		cmd[len - 1] = '\0';
@@ -106,7 +108,7 @@ int main(void) {
 			BrisiStog(Head.Next);
 			BrisiSve(Root.child);
 		}
-		else 
+		else
 		{
 			printf("\nNepostojeca komanda :(");
 		}
@@ -123,7 +125,7 @@ int Stvori(Position S) {
 	Position Q = NULL;
 	char dir_name[LINE_LENGTH] = { '\0' };
 
-	printf("\n***Unos direktorija***\nUnesite ime> ");
+	printf("\nUnesite ime> ");
 	scanf_s(" %s", dir_name, LINE_LENGTH);
 
 	if (NULL == P->child) {
@@ -201,7 +203,8 @@ Position Ulaz(Position S, Pos P) {
 		return NULL;
 	}
 	S = Q;
-
+	strcat(direktoriji, "\\");
+	strcat(direktoriji, dir_name);
 	printf("\nOdabran direktorij: %s!", S->naziv);
 
 	return S;
@@ -225,10 +228,10 @@ int DodajNaStog(Position S, Pos P) {
 Position VracanjeNatrag(Pos P) {
 	Position current = NULL;
 	current = P->Next->Prethodna;
+	strremove(&direktoriji, &current->child->naziv);
 	MakniSaStoga(P);
 
 	printf("\nVratili ste se u direktorij %s", current->naziv);
-
 	return current;
 }
 
@@ -244,7 +247,7 @@ int MakniSaStoga(Pos P) {
 
 int Ispis(Position S) {
 	Position P = S->child;
-	printf("\nDatoteke u direktriju %s su: ", S->naziv);
+	printf("\nDatoteke u direktoriju %s su: ", S->naziv);
 	while (P != NULL) {
 		printf("\n> %s", P->naziv);
 		P = P->sibling;
@@ -278,4 +281,17 @@ int BrisiSve(Position S) {
 	free(S);
 
 	return EXIT_SUCCESS;
+}
+
+char* strremove(char* str, const char* sub) {
+	char* p, * q, * r;
+	if (*sub && (q = r = strstr(str, sub)) != NULL) {
+		size_t len = strlen(sub);
+		while ((r = strstr(p = r + len, sub)) != NULL) {
+			memmove(q, p, r - p);
+			q += r - p;
+		}
+		memmove(q, p, strlen(p) + 1);
+	}
+	return str;
 }

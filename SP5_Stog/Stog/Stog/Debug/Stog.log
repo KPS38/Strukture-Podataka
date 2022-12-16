@@ -1,4 +1,0 @@
-﻿  Source.c
-C:\Users\KPS\Desktop\Misto\SP5_Stog\Stog\Stog\Source.c(13,1): warning C4005: 'EXIT_SUCCESS': macro redefinition
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h(52): message : see previous definition of 'EXIT_SUCCESS'
-  Stog.vcxproj -> C:\Users\KPS\Desktop\Misto\SP5_Stog\Stog\Debug\Stog.exe

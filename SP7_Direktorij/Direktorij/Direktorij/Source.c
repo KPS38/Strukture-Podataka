@@ -26,7 +26,6 @@ typedef struct stack
 	Pos Next;
 }Stog;
 
-char direktoriji[LINE_LENGTH] = "User";
 // "md" - napravi novi direktorij
 // "cd dir" - promjena direktorija 
 // "cd.." - povratak na roditeljski direktorij
@@ -41,7 +40,7 @@ int MakniSaStoga(Pos P);
 int Ispis(Position S);
 int BrisiSve(Position S);
 int BrisiStog(Pos P);
-char* strremove(char* str, const char* sub);
+int Terminal(Position S, Position C);
 
 int main(void) {
 
@@ -65,7 +64,7 @@ int main(void) {
 	while (strcmp(cmd, "izlaz") != 0) {
 
 		printf("\nPostojece komande: md /cd dir /cd.. /dir /izlaz ");
-		printf("\nc:\\%s>", direktoriji);
+		Terminal(&Root, current);
 		fgets(cmd, LINE_LENGTH, stdin);
 		int len = strlen(cmd);
 		cmd[len - 1] = '\0';
@@ -203,8 +202,6 @@ Position Ulaz(Position S, Pos P) {
 		return NULL;
 	}
 	S = Q;
-	strcat(direktoriji, "\\");
-	strcat(direktoriji, dir_name);
 	printf("\nOdabran direktorij: %s!", S->naziv);
 
 	return S;
@@ -228,7 +225,6 @@ int DodajNaStog(Position S, Pos P) {
 Position VracanjeNatrag(Pos P) {
 	Position current = NULL;
 	current = P->Next->Prethodna;
-	strremove(&direktoriji, &current->child->naziv);
 	MakniSaStoga(P);
 
 	printf("\nVratili ste se u direktorij %s", current->naziv);
@@ -283,15 +279,13 @@ int BrisiSve(Position S) {
 	return EXIT_SUCCESS;
 }
 
-char* strremove(char* str, const char* sub) {
-	char* p, * q, * r;
-	if (*sub && (q = r = strstr(str, sub)) != NULL) {
-		size_t len = strlen(sub);
-		while ((r = strstr(p = r + len, sub)) != NULL) {
-			memmove(q, p, r - p);
-			q += r - p;
-		}
-		memmove(q, p, strlen(p) + 1);
+int Terminal(Position S, Position C) {
+	Position P = S->child;
+	printf("\nC:\\%s", S->naziv);
+	while (P != C && strcmp(P->naziv, C->naziv)!=0) {
+		printf("\\%s", P->naziv);
+		P = P->child;
 	}
-	return str;
+	printf("> ");
+	return EXIT_SUCCESS;
 }

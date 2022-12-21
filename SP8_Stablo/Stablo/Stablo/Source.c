@@ -35,10 +35,10 @@ int BrisiSve(Tree S);
 int main(void) {
 	int rval = 0;
 	printf("Unesi vrijednost root-a (veci od nula)>");
-	scanf(" %d", &rval);
+	scanf_s(" %d", &rval);
 	while (rval <= 0) {
 		printf("\nA brate ne gnjavi nego napravi kako valja>");
-		scanf(" %d", &rval);
+		scanf_s(" %d", &rval);
 	}
 	int op = 0;
 	Node Root = {
@@ -100,6 +100,8 @@ int main(void) {
 			break;
 		}
 	} while (op != 0);
+
+	BrisiSve(&Root);
 	return EXIT_SUCCESS;
 }
 
@@ -153,15 +155,16 @@ Tree Dodaj(int X, Tree S) {
 		S->val = X;
 		S->left = NULL;
 		S->right = NULL;
+		if (S == NULL) {
+			printf("Pogreska prilikom alociranja, alociranje neuspjesno.\n");
+			return MALLOC_ERROR;
+		}
 	}
 	if (X < S->val) {
 		S->left = Dodaj(X, S->left);
 	}
 	else if (X > S->val) {
 		S->right = Dodaj(X, S->right);
-	}
-	else {
-		printf("A brate nemos, vec postoji taj broj\n");
 	}
 	return S;
 }
@@ -246,14 +249,19 @@ int TrenutniLevel(Tree S, int level)
 	if (level == 1)
 		printf("%d ", S->val);
 	else if (level > 1) {
-		printCurrentLevel(S->left, level - 1);
-		printCurrentLevel(S->right, level - 1);
+		TrenutniLevel(S->left, level - 1);
+		TrenutniLevel(S->right, level - 1);
 	}
+	return EXIT_SUCCESS;
 }
 
 int LevelorderIspis(Tree S) {
 	int h = Visina(S);
-	int i=0;
+	int i = 0;
 	for (i = 1; i <= h; i++)
-		printCurrentLevel(S, i);
+		TrenutniLevel(S, i);
+}
+
+int BrisiSve(Tree S) {
+
 }

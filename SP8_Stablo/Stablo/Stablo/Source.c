@@ -29,7 +29,8 @@ int PreorderIspis(Tree S);
 int PostorderIspis(Tree S);
 int Visina(Tree S);
 int TrenutniLevel(Tree S, int level);
-int LevelorderIspsi(Tree S);
+int LevelorderIspis(Tree S);
+int BrisiSve(Tree S);
 
 int main(void) {
 	int rval = 0;
@@ -40,7 +41,7 @@ int main(void) {
 		scanf(" %d", &rval);
 	}
 	int op = 0;
-	node Root = {
+	Node Root = {
 		.val = rval,
 		.left = NULL,
 		.right = NULL
@@ -65,7 +66,7 @@ int main(void) {
 		switch (op) {
 		case 1:
 			printf("Unos elementa...\nVrijednost>");
-			scanf(" %d", &rval);
+			scanf_s(" %d", &rval);
 			Dodaj(rval, &Root);
 			break;
 		case 2:
@@ -86,12 +87,12 @@ int main(void) {
 			break;
 		case 6:
 			printf("Briši elemement...\nVrijednost>");
-			scanf(" %d", &rval);
+			scanf_s(" %d", &rval);
 			Brisi(rval, &Root);
 			break;
 		case 7:
 			printf("Traži element...\nVrijednost>");
-			scanf(" %d", &rval);
+			scanf_s(" %d", &rval);
 			Trazi(rval, &Root);
 			break;
 		case 0:
@@ -159,11 +160,38 @@ Tree Dodaj(int X, Tree S) {
 	else if (X > S->val) {
 		S->right = Dodaj(X, S->right);
 	}
+	else {
+		printf("A brate nemos, vec postoji taj broj\n");
+	}
 	return S;
 }
 
 Tree Brisi(int X, Tree S) {
-
+	if (NULL == S) {
+		printf("A brate nemos, nema ga\n");
+	}
+	if (X < S->val) {
+		S->left = Brisi(X, S->left);
+	}
+	else if (X > S->val) {
+		S->right = Brisi(X, S->right);
+	}
+	else if (S->left != NULL && S->right != NULL) {
+		Position temp = TraziMin(S->right);
+		S->val = temp->val;
+		S->right = Brisi(S->val, S->right);
+	}
+	else {
+		Position temp = S;
+		if (NULL == S->left) {
+			S = S->right;
+		}
+		else {
+			S = S->left;
+		}
+		free(temp);
+	}
+	return S;
 }
 
 int InorderIspis(Tree S) {

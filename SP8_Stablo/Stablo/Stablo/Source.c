@@ -16,7 +16,7 @@ typedef struct tree_node
 	int val;
 	Tree left;
 	Tree right;
-}node;
+}Node;
 
 Tree StvoriPrazno(Tree S);
 Position TraziMin(Tree S);
@@ -27,6 +27,8 @@ Tree Brisi(int X, Tree S);
 int InorderIspis(Tree S);
 int PreorderIspis(Tree S);
 int PostorderIspis(Tree S);
+int Visina(Tree S);
+int TrenutniLevel(Tree S, int level);
 int LevelorderIspsi(Tree S);
 
 int main(void) {
@@ -54,8 +56,8 @@ int main(void) {
 		"3) Preorder ispis\n"
 		"4) Postorder ispis\n"
 		"5) Level order ispis\n"
-		"6) Briši element\n"
-		"7) Traži element\n"
+		"6) BriÅ¡i element\n"
+		"7) TraÅ¾i element\n"
 		"0) Izlaz\n"
 		"*\t*\t*\t*\n");
 	scanf_s(" %d", &op);
@@ -83,12 +85,12 @@ int main(void) {
 			LevelorderIspis(&Root);
 			break;
 		case 6:
-			printf("Briši elemement...\nVrijednost>");
+			printf("BriÅ¡i elemement...\nVrijednost>");
 			scanf(" %d", &rval);
 			Brisi(rval, &Root);
 			break;
 		case 7:
-			printf("Traži element...\nVrijednost>");
+			printf("TraÅ¾i element...\nVrijednost>");
 			scanf(" %d", &rval);
 			Trazi(rval, &Root);
 			break;
@@ -146,7 +148,7 @@ Position Trazi(int X, Tree S) {
 
 Tree Dodaj(int X, Tree S) {
 	if (NULL == S) {
-		S = (Tree)malloc(sizeof(Tree));
+		S = (Tree)malloc(sizeof(Node));
 		S->val = X;
 		S->left = NULL;
 		S->right = NULL;
@@ -194,6 +196,36 @@ int PostorderIspis(Tree S) {
 	return EXIT_SUCCESS;
 }
 
-int LevelorderIspis(Tree S) {
+int Visina(Tree S)
+{
+	if (S == NULL)
+		return EXIT_SUCCESS;
+	else {
+		int lvisina = Visina(S->left);
+		int rvisina = Visina(S->right);
 
+		if (lvisina > rvisina)
+			return (lvisina + 1);
+		else
+			return (rvisina + 1);
+	}
+}
+
+int TrenutniLevel(Tree S, int level)
+{
+	if (S == NULL)
+		return EXIT_SUCCESS;
+	if (level == 1)
+		printf("%d ", S->val);
+	else if (level > 1) {
+		printCurrentLevel(S->left, level - 1);
+		printCurrentLevel(S->right, level - 1);
+	}
+}
+
+int LevelorderIspis(Tree S) {
+	int h = Visina(S);
+	int i=0;
+	for (i = 1; i <= h; i++)
+		printCurrentLevel(S, i);
 }

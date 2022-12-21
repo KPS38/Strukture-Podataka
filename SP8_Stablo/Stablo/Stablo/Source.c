@@ -18,7 +18,6 @@ typedef struct tree_node
 	Tree right;
 }Node;
 
-Tree StvoriPrazno(Tree S);
 Position TraziMin(Tree S);
 Position TraziMax(Tree S);
 Position Trazi(int X, Tree S);
@@ -86,12 +85,12 @@ int main(void) {
 			LevelorderIspis(&Root);
 			break;
 		case 6:
-			printf("Briši elemement...\nVrijednost>");
+			printf("Brisi elemement...\nVrijednost>");
 			scanf_s(" %d", &rval);
 			Brisi(rval, &Root);
 			break;
 		case 7:
-			printf("Traži element...\nVrijednost>");
+			printf("Trazi element...\nVrijednost>");
 			scanf_s(" %d", &rval);
 			Trazi(rval, &Root);
 			break;
@@ -102,15 +101,6 @@ int main(void) {
 	} while (op != 0);
 
 	BrisiSve(&Root);
-	return EXIT_SUCCESS;
-}
-
-Tree StvoriPrazno(Tree S) {
-	if (NULL == S) {
-		StvoriPrazno(S->left);
-		StvoriPrazno(S->right);
-		free(S);
-	}
 	return EXIT_SUCCESS;
 }
 
@@ -202,7 +192,7 @@ int InorderIspis(Tree S) {
 		return EXIT_SUCCESS;
 	}
 	InorderIspis(S->left);
-	printf(S->val);
+	printf("%d ", S->val);
 	InorderIspis(S->right);
 	return EXIT_SUCCESS;
 }
@@ -211,7 +201,7 @@ int PreorderIspis(Tree S) {
 	if (S == NULL) {
 		return EXIT_SUCCESS;
 	}
-	printf(S->val);
+	printf("%d ", S->val);
 	PreorderIspis(S->left);
 	PreorderIspis(S->right);
 	return EXIT_SUCCESS;
@@ -223,7 +213,7 @@ int PostorderIspis(Tree S) {
 	}
 	PostorderIspis(S->left);
 	PostorderIspis(S->right);
-	printf(S->val);
+	printf("%d ", S->val);
 	return EXIT_SUCCESS;
 }
 
@@ -263,5 +253,16 @@ int LevelorderIspis(Tree S) {
 }
 
 int BrisiSve(Tree S) {
+	if (NULL == S) {
+		return EXIT_SUCCESS;
+	}
+	if (S->left != NULL) {
+		BrisiSve(S->left);
+	}
+	if (S->right != NULL) {
+		BrisiSve(S->right);
+	}
+	free(S);
 
+	return EXIT_SUCCESS;
 }

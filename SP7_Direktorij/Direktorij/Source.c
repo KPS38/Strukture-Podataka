@@ -268,12 +268,8 @@ int BrisiSve(Position S) {
 	if (NULL == S) {
 		return EXIT_SUCCESS;
 	}
-	if (S->child != NULL) {
 		BrisiSve(S->child);
-	}
-	if (S->sibling != NULL) {
 		BrisiSve(S->sibling);
-	}
 	free(S);
 
 	return EXIT_SUCCESS;

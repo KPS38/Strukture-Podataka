@@ -1,0 +1,5 @@
+﻿  Source.c
+C:\Users\KPS\Desktop\Misto\SP8_Stablo\Stablo\Stablo\Source.c(151): warning C4715: 'Trazi': not all control paths return a value
+C:\Users\KPS\Desktop\Misto\SP8_Stablo\Stablo\Stablo\Source.c(278): warning C4715: 'BrisiSve': not all control paths return a value
+C:\Users\KPS\Desktop\Misto\SP8_Stablo\Stablo\Stablo\Source.c(268): warning C4716: 'LevelorderIspis': must return a value
+  Stablo.vcxproj -> C:\Users\KPS\Desktop\Misto\SP8_Stablo\Stablo\x64\Debug\Stablo.exe

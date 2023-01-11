@@ -1,3 +1,1 @@
-﻿  Source.c
-C:\Users\Pjero\Desktop\Main\Misto\SP7_Direktorij\Direktorij\Source.c(69,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Direktorij.vcxproj -> C:\Users\Pjero\Desktop\Main\Misto\SP7_Direktorij\x64\Debug\Direktorij.exe
+﻿  Direktorij.vcxproj -> C:\Users\KPS\Desktop\Misto\SP7_Direktorij\x64\Debug\Direktorij.exe

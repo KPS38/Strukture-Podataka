@@ -71,28 +71,34 @@ int main(void) {
 		case 2:
 			printf("Inorder ispis...\n");
 			InorderIspis(&Root);
+			printf("\n");
 			break;
 		case 3:
 			printf("Preorder ispis...\n");
 			PreorderIspis(&Root);
+			printf("\n");
 			break;
 		case 4:
 			printf("Postorder ispis...\n");
 			PostorderIspis(&Root);
+			printf("\n");
 			break;
 		case 5:
 			printf("Level order ispis...\n");
 			LevelorderIspis(&Root);
+			printf("\n");
 			break;
 		case 6:
 			printf("Brisi elemement...\nVrijednost>");
 			scanf_s(" %d", &rval);
 			Brisi(rval, &Root);
+			printf("\n");
 			break;
 		case 7:
 			printf("Trazi element...\nVrijednost>");
 			scanf_s(" %d", &rval);
 			Trazi(rval, &Root);
+			printf("\n");
 			break;
 		case 0:
 			printf("Izlaz...\n");
@@ -100,7 +106,8 @@ int main(void) {
 		}
 	} while (op != 0);
 
-	BrisiSve(&Root);
+	BrisiSve(Root.left);
+	BrisiSve(Root.right);
 	return EXIT_SUCCESS;
 }
 
@@ -126,15 +133,19 @@ Position TraziMax(Tree S) {
 
 Position Trazi(int X, Tree S) {
 	if (NULL == S) {
+		printf("Nije pronaden\n");
 		return NULL;
 	}
 	if (X < S->val) {
+		printf("%d->", S->val);
 		Trazi(X, S->left);
 	}
 	else if (X > S->val) {
+		printf("%d->", S->val);
 		Trazi(X, S->right);
 	}
 	else {
+		printf("%d", S->val);
 		return S;
 	}
 }
@@ -162,6 +173,7 @@ Tree Dodaj(int X, Tree S) {
 Tree Brisi(int X, Tree S) {
 	if (NULL == S) {
 		printf("A brate nemos, nema ga\n");
+		return NULL;
 	}
 	if (X < S->val) {
 		S->left = Brisi(X, S->left);
@@ -178,12 +190,15 @@ Tree Brisi(int X, Tree S) {
 		Position temp = S;
 		if (NULL == S->left) {
 			S = S->right;
+			free(temp);
 		}
 		else {
 			S = S->left;
+			free(temp);
 		}
-		free(temp);
+
 	}
+
 	return S;
 }
 
@@ -248,21 +263,16 @@ int TrenutniLevel(Tree S, int level)
 int LevelorderIspis(Tree S) {
 	int h = Visina(S);
 	int i = 0;
-	for (i = 1; i <= h; i++)
+	for (i = h; i > 0; i--)
 		TrenutniLevel(S, i);
 }
 
 int BrisiSve(Tree S) {
-	if (NULL == S) {
+	if (S == NULL) {
 		return EXIT_SUCCESS;
 	}
-	if (S->left != NULL) {
-		BrisiSve(S->left);
-	}
-	if (S->right != NULL) {
-		BrisiSve(S->right);
-	}
-	free(S);
 
-	return EXIT_SUCCESS;
+	BrisiSve(S->left);
+	BrisiSve(S->right);
+	free(S);
 }

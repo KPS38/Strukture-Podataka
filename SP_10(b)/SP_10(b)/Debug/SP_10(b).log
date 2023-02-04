@@ -1,0 +1,5 @@
+﻿  Source.c
+C:\Users\KPS\Desktop\Misto\SP_10(b)\SP_10(b)\Source.c(107,20): warning C4047: 'return': 'Tree' differs in levels of indirection from 'int'
+C:\Users\KPS\Desktop\Misto\SP_10(b)\SP_10(b)\Source.c(184,14): warning C4047: 'return': 'int' differs in levels of indirection from 'void *'
+C:\Users\KPS\Desktop\Misto\SP_10(b)\SP_10(b)\Source.c(196,15): warning C4047: 'return': 'int' differs in levels of indirection from 'void *'
+  SP_10(b).vcxproj -> C:\Users\KPS\Desktop\Misto\SP_10(b)\Debug\SP_10(b).exe

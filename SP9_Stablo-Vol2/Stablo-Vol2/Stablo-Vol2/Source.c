@@ -72,17 +72,15 @@ int main(void)
 
 
 	Random(&NRoot, count);
-
 	LevelOrderIspis(&NRoot);
 	printf("\n");
 	UnosDat(fp, &NRoot);
-
+	fprintf(fp, "\n");
 	Replace(&NRoot);
-
 	LevelOrderIspis(&NRoot);
 	printf("\n");
 	UnosDat(fp, &NRoot);
-	fprintf(fp, "\n\n");
+	
 
 	BrisiSve(NRoot.left);
 	BrisiSve(NRoot.right);

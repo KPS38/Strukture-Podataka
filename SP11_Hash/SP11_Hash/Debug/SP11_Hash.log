@@ -1,0 +1,6 @@
+﻿  Source.c
+C:\Users\KPS\Desktop\Misto\SP11_Hash\SP11_Hash\Source.c(84,9): warning C4133: 'function': incompatible types - from 'hashTab' to 'Position'
+C:\Users\KPS\Desktop\Misto\SP11_Hash\SP11_Hash\Source.c(96,10): warning C4133: 'function': incompatible types - from 'hashTab' to 'Position'
+C:\Users\KPS\Desktop\Misto\SP11_Hash\SP11_Hash\Source.c(298,19): warning C4028: formal parameter 1 different from declaration
+C:\Users\KPS\Desktop\Misto\SP11_Hash\SP11_Hash\Source.c(364,52): warning C4047: '=': 'List *' differs in levels of indirection from 'List'
+  SP11_Hash.vcxproj -> C:\Users\KPS\Desktop\Misto\SP11_Hash\Debug\SP11_Hash.exe
